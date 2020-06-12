@@ -1,0 +1,58 @@
+.App {
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+.side-bar {
+  width: 5%;
+  height: 100vh;
+  background-color: rgb(143, 143, 143);
+  float: left;
+}
+
+.dashboard {
+  width: 95%;
+  height: 100vh;
+  background-color: rgb(204, 204, 204);
+  float: right;
+  .up-area {
+    width: 94%;
+    height: 40vh;
+    background-color: #646464;
+    margin: 5vh auto 0;
+    .today-detail {
+      width: 62%;
+      height: inherit;
+      background-color: #424242;
+      float: left;
+    }
+    .now-info {
+      width: 35%;
+      height: inherit;
+      background-color: #424242;
+      float: right;
+    }
+  }
+  .down-area {
+    width: 94%;
+    height: 45vh;
+    background-color: #646464;
+    margin: 5vh auto 0;
+    .sun-moon-time {
+      width: 32%;
+      height: inherit;
+      background-color: #424242;
+      float: left;
+    }
+    .week-info {
+      width: 65%;
+      height: inherit;
+      background-color: #424242;
+      float: right;
+    }
+  }
+}
