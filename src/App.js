@@ -1,20 +1,35 @@
 import React from 'react'
 import './App.scss'
+import SideBar from './components/SideBar'
+import Home from './page/Home'
+import { changeStandardTime, getTimePeriod } from './function/time'
 
-function App() {
+const searchCity = '臺中市'
+const searchDistrict = '西屯區'
+
+const App = () => {
+  const [time, setTime] = React.useState(new Date())
+  const [timePeriod, setTimePeriod] = React.useState('')
+
+  React.useEffect(() => {
+    const getNowTime = setInterval(() => {
+      setTime(new Date())
+    }, 60 * 1000)
+
+    const calculateTimePeriod = () => {
+      setTimePeriod(getTimePeriod(searchCity, changeStandardTime(time, 'hh:mm')))
+    }
+
+    calculateTimePeriod()
+
+    return () => {
+      clearInterval(getNowTime)
+    }
+  }, [time])
   return (
-    <div className="App">
-      <div className="side-bar"></div>
-      <div className="dashboard">
-        <div className="up-area">
-          <div className="today-detail"></div>
-          <div className="now-info"></div>
-        </div>
-        <div className="down-area">
-          <div className="sun-moon-time"></div>
-          <div className="week-info"></div>
-        </div>
-      </div>
+    <div className={`App time-period ${timePeriod}`}>
+      <SideBar />
+      <Home />
     </div>
   )
 }
