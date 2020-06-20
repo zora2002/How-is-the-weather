@@ -16,7 +16,7 @@ const TwentyFourHours = ({ apiCity2Day1WeekForecast }) => {
         let list = []
         t.time.map((i) => list.push(i.elementValue[0].value))
 
-        const svgResult = settingSVG(list.slice(0, 10), list.slice(0, 10), 10, 80, 60)
+        const svgResult = settingSVG(list.slice(0, 10), 10, 80, 60)
         setSvgInfoList(svgResult.svgInfoListValue)
         setSvgPathD(svgResult.svgPathDValue)
       }
@@ -27,8 +27,9 @@ const TwentyFourHours = ({ apiCity2Day1WeekForecast }) => {
   }, [city2Day1WeekForecast])
   return (
     <div className="twenty-four-hours">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 100" className="twenty">
-        {svgInfoList}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 100" className="twenty" key={new Date().getTime()}>
+        {svgInfoList.text}
+        {svgInfoList.circle}
         <path
           id=""
           dataname=""

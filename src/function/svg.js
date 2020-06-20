@@ -1,9 +1,7 @@
 import React from 'react'
 
-export function settingSVG(originTempList, tempList, xlineNum, xEveryWidth, yTotalHeight) {
-  // originTempList = ['25', '30', '37', '25', '32', '20', '28', '34', '30', '28']
-  // tempList = ['25', '30', '37', '25', '32', '20', '28', '34', '30', '28']
-
+export function settingSVG(tempList, xlineNum, xEveryWidth, yTotalHeight) {
+  const originTempList = [...tempList]
   // X軸間距
   let xline = []
   for (let i = 0; i < xlineNum; i++) {
@@ -12,8 +10,8 @@ export function settingSVG(originTempList, tempList, xlineNum, xEveryWidth, yTot
   // console.log(xline)
 
   // 氣溫列表字串轉數字，並取得各值與最大值的差
-  tempList.map((i) => parseInt(i))
-  tempList.map((i, index) => (tempList[index] = Math.abs(i - Math.max(...tempList))))
+  tempList = tempList.map((i) => parseInt(i))
+  tempList = tempList.map((i) => Math.abs(i - Math.max(...tempList)))
   // console.log(tempList)
 
   // 取得最大的差
@@ -21,20 +19,30 @@ export function settingSVG(originTempList, tempList, xlineNum, xEveryWidth, yTot
   // console.log(diffTemp)
 
   // 最大的差:yTotalHeight(svg高度) => 比例套在各值，得出每個氣溫的svg高度
-  tempList.map((i, index) => (tempList[index] = i * Math.round(yTotalHeight / diffTemp)))
+  tempList = tempList.map((i) => i * Math.round(yTotalHeight / diffTemp))
   // console.log(tempList)
 
-  let svgInfoListValue = []
+  let svgInfoListValue = {
+    text: [],
+    circle: [],
+  }
   let svgPathDValue = ''
 
   for (let i = 0; i < xline.length; i++) {
-    svgInfoListValue.push(
-      <>
-        <text x={xline[i] + 10 + 10} y={tempList[i] - 10 + 30} fontSize="12" textAnchor="end" fill="#707070">
-          {originTempList[i]}
-        </text>
-        <circle cx={xline[i] + 10} cy={tempList[i] + 30} r="2" fill="#707070" />
-      </>
+    svgInfoListValue.text.push(
+      <text
+        key={`text-${xline[i]}-${i}`}
+        x={xline[i] + 10 + 10}
+        y={tempList[i] - 10 + 30}
+        fontSize="12"
+        textAnchor="end"
+        fill="#707070"
+      >
+        {originTempList[i]}
+      </text>
+    )
+    svgInfoListValue.circle.push(
+      <circle key={`circle-${xline[i]}-${i}`} cx={xline[i] + 10} cy={tempList[i] + 30} r="2" fill="#707070" />
     )
     svgPathDValue += `${xline[i]},${tempList[i] + 30},`
   }

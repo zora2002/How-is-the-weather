@@ -29,6 +29,7 @@ const Home = () => {
       clearInterval(getNowTime)
     }
   }, [time])
+
   React.useEffect(() => {
     const getApiCity2Day1WeekForecast = () => {
       const params = {}
@@ -45,10 +46,9 @@ const Home = () => {
         })
     }
     getApiCity2Day1WeekForecast()
+
     const getApiCountry36HoursForecast = () => {
-      const params = {
-        locationName: searchCity,
-      }
+      const params = { locationName: searchCity }
       country36HoursForecast(params)
         .then((response) => {
           const city = response.data.records.location[0]
@@ -66,18 +66,22 @@ const Home = () => {
 
   return (
     <div className="dashboard">
-      <div className="up-area">
-        <TwentyFourHours apiCity2Day1WeekForecast={apiCity2Day1WeekForecast} />
-        <NowInfo
-          apiCity2Day1WeekForecast={apiCity2Day1WeekForecast}
-          apiCountry36HoursForecast={apiCountry36HoursForecast}
-          time={time}
-        />
-      </div>
-      <div className="down-area">
-        <div className="sun-moon-time"></div>
-        <div className="week-info"></div>
-      </div>
+      {apiCity2Day1WeekForecast && apiCountry36HoursForecast && (
+        <>
+          <div className="up-area">
+            <TwentyFourHours apiCity2Day1WeekForecast={apiCity2Day1WeekForecast} />
+            <NowInfo
+              apiCity2Day1WeekForecast={apiCity2Day1WeekForecast}
+              apiCountry36HoursForecast={apiCountry36HoursForecast}
+              time={time}
+            />
+          </div>
+          <div className="down-area">
+            <div className="sun-moon-time"></div>
+            <div className="week-info"></div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
