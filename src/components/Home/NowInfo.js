@@ -1,8 +1,8 @@
 import React from 'react'
 import { changeStandardTime, isApiFirstArrayHour } from '../../function/time'
 
-const NowInfo = ({ apiCity2Day1WeekForecast, apiCountry36HoursForecast, time }) => {
-  const city2Day1WeekForecast = apiCity2Day1WeekForecast
+const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
+  const city2Day1WeekForecast = apiCity2DayForecast
   const country36HoursForecast = apiCountry36HoursForecast
   const [temperature, setTemperature] = React.useState('')
   const [rain, setRain] = React.useState('')

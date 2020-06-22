@@ -2,8 +2,8 @@ import React from 'react'
 import '../../style/Home/TwentyFourHours.scss'
 import { settingSVG } from '../../function/svg'
 
-const TwentyFourHours = ({ apiCity2Day1WeekForecast }) => {
-  const city2Day1WeekForecast = apiCity2Day1WeekForecast
+const TwentyFourHours = ({ apiCity2DayForecast }) => {
+  const city2Day1WeekForecast = apiCity2DayForecast
   const [timeIconList, setTimeIconList] = React.useState([])
   const [rainList, setRainList] = React.useState([])
   const [svgInfoList, setSvgInfoList] = React.useState([])

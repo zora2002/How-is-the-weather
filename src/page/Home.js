@@ -12,7 +12,8 @@ const searchDistrict = '西屯區'
 const Home = () => {
   const [time, setTime] = React.useState(new Date())
   const [hour, setHour] = React.useState(changeStandardTime(new Date(), 'hh'))
-  const [apiCity2Day1WeekForecast, setApiCity2Day1WeekForecast] = React.useState(null)
+  const [apiCity2DayForecast, setApiCity2DayForecast] = React.useState(null)
+  const [apiCity1WeekForecast, setApiCity1WeekForecast] = React.useState(null)
   const [apiCountry36HoursForecast, setApiCountry36HoursForecast] = React.useState(null)
 
   React.useEffect(() => {
@@ -31,20 +32,20 @@ const Home = () => {
   }, [time])
 
   React.useEffect(() => {
-    const getApiCity2Day1WeekForecast = () => {
+    const getApiCity2DayForecast = () => {
       const params = {}
       city2Day1WeekForecast(params, searchCity, 2)
         .then((response) => {
           const city = response.data.records.locations[0].location
           const district = city.find((i) => i.locationName === searchDistrict)
           const weatherElement = district.weatherElement
-          setApiCity2Day1WeekForecast(weatherElement)
+          setApiCity2DayForecast(weatherElement)
         })
         .catch((error) => {
           console.log(error)
         })
     }
-    getApiCity2Day1WeekForecast()
+    getApiCity2DayForecast()
 
     const getApiCountry36HoursForecast = () => {
       const params = { locationName: searchCity }
@@ -65,12 +66,12 @@ const Home = () => {
 
   return (
     <div className="dashboard">
-      {apiCity2Day1WeekForecast && apiCountry36HoursForecast && (
+      {apiCity2DayForecast && apiCountry36HoursForecast && (
         <>
           <div className="up-area">
-            <TwentyFourHours apiCity2Day1WeekForecast={apiCity2Day1WeekForecast} />
+            <TwentyFourHours apiCity2DayForecast={apiCity2DayForecast} />
             <NowInfo
-              apiCity2Day1WeekForecast={apiCity2Day1WeekForecast}
+              apiCity2DayForecast={apiCity2DayForecast}
               apiCountry36HoursForecast={apiCountry36HoursForecast}
               time={time}
             />
