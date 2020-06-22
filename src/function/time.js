@@ -152,3 +152,30 @@ export function getTimePeriod(city, time) {
   console.log(timePeriodList[1][timePeriodIndex])
   return timePeriodList[1][timePeriodIndex]
 }
+
+export function isApiFirstArrayHour(apiFirstArrayHour) {
+  const now = new Date()
+  const hh = now.getHours()
+  apiFirstArrayHour = new Date(apiFirstArrayHour).getHours()
+  if (apiFirstArrayHour >= 0 && apiFirstArrayHour < 21) {
+    if (apiFirstArrayHour <= hh && hh <= apiFirstArrayHour + 2) {
+      // 0 1 2
+      return true
+    } else if (apiFirstArrayHour + 3 <= hh && hh <= apiFirstArrayHour + 5) {
+      // 3 4 5
+      return false
+    } else {
+      console.log('未知的時段1')
+    }
+  } else if (apiFirstArrayHour === 21) {
+    if (apiFirstArrayHour <= hh && hh <= apiFirstArrayHour + 2) {
+      // 21 22 23
+      return true
+    } else if (apiFirstArrayHour - 21 <= hh && hh <= apiFirstArrayHour - 21 + 2) {
+      // 0 1 2
+      return false
+    } else {
+      console.log('未知的時段2')
+    }
+  }
+}

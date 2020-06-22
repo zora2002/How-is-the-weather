@@ -34,15 +34,15 @@ export function settingSVG(tempList, xlineNum, xEveryWidth, yTotalHeight) {
         key={`text-${xline[i]}-${i}`}
         x={xline[i] + 10 + 10}
         y={tempList[i] - 10 + 30}
-        fontSize="12"
+        fontSize="14"
         textAnchor="end"
-        fill="#707070"
+        fill="#000000"
       >
         {originTempList[i]}
       </text>
     )
     svgInfoListValue.circle.push(
-      <circle key={`circle-${xline[i]}-${i}`} cx={xline[i] + 10} cy={tempList[i] + 30} r="2" fill="#707070" />
+      <circle key={`circle-${xline[i]}-${i}`} cx={xline[i] + 10} cy={tempList[i] + 30} r="3" fill="#000000" />
     )
     svgPathDValue += `${xline[i]},${tempList[i] + 30},`
   }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { changeStandardTime } from '../../function/time'
+import { changeStandardTime, isApiFirstArrayHour } from '../../function/time'
 
 const NowInfo = ({ apiCity2Day1WeekForecast, apiCountry36HoursForecast, time }) => {
   const city2Day1WeekForecast = apiCity2Day1WeekForecast
@@ -15,7 +15,8 @@ const NowInfo = ({ apiCity2Day1WeekForecast, apiCountry36HoursForecast, time }) 
 
       if (city2Day1WeekForecast) {
         const t = city2Day1WeekForecast.find((i) => i.elementName === 'T') // 溫度
-        setTemperature(t.time[0].elementValue[0].value)
+        const tIndex = isApiFirstArrayHour(t.time[0].dataTime) ? 0 : 1
+        setTemperature(t.time[tIndex].elementValue[0].value)
         const pop6h = city2Day1WeekForecast.find((i) => i.elementName === 'PoP6h') // 6小時降雨機率
         setRain(pop6h.time[0].elementValue[0].value)
       }

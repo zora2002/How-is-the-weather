@@ -38,7 +38,6 @@ const Home = () => {
           const city = response.data.records.locations[0].location
           const district = city.find((i) => i.locationName === searchDistrict)
           const weatherElement = district.weatherElement
-
           setApiCity2Day1WeekForecast(weatherElement)
         })
         .catch((error) => {

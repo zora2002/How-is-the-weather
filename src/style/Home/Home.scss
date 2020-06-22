@@ -14,6 +14,15 @@
       background-color: #fbfbfbcc;
       float: left;
       border-radius: 3vh;
+      font-size: 2.2vh;
+      text-align: center;
+      letter-spacing: 0.8px;
+      ul {
+        display: flex;
+        justify-content: space-between;
+        margin: auto;
+        // background-color: rgb(182, 149, 107);
+      }
     }
     .now-info {
       width: 35%;
