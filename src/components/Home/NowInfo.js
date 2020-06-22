@@ -7,7 +7,7 @@ const NowInfo = ({ apiCity2Day1WeekForecast, apiCountry36HoursForecast, time }) 
   const [temperature, setTemperature] = React.useState('')
   const [rain, setRain] = React.useState('')
   const [describe, setDescribe] = React.useState('')
-  const [icon, setIcon] = React.useState(require('../../img/sunny_and_cloudy.svg'))
+  const [icon, setIcon] = React.useState(1)
 
   React.useEffect(() => {
     const getTemperatureRain = () => {
@@ -33,6 +33,7 @@ const NowInfo = ({ apiCity2Day1WeekForecast, apiCountry36HoursForecast, time }) 
       if (country36HoursForecast) {
         const wx = country36HoursForecast.find((i) => i.elementName === 'Wx') // 天氣現象
         setDescribe(wx.time[0].parameter.parameterName)
+        setIcon(wx.time[0].parameter.parameterValue)
       }
     }
     getDescribe()
@@ -43,7 +44,7 @@ const NowInfo = ({ apiCity2Day1WeekForecast, apiCountry36HoursForecast, time }) 
   return (
     <div className="now-info">
       <div className="icon">
-        <img src={icon} alt="" />
+        <img src={require(`../../img/icon/${icon}.svg`)} alt="" />
       </div>
       <div className="data">
         <div className="temperature">{temperature}℃</div>

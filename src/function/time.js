@@ -157,25 +157,11 @@ export function isApiFirstArrayHour(apiFirstArrayHour) {
   const now = new Date()
   const hh = now.getHours()
   apiFirstArrayHour = new Date(apiFirstArrayHour).getHours()
-  if (apiFirstArrayHour >= 0 && apiFirstArrayHour < 21) {
-    if (apiFirstArrayHour <= hh && hh <= apiFirstArrayHour + 2) {
-      // 0 1 2
-      return true
-    } else if (apiFirstArrayHour + 3 <= hh && hh <= apiFirstArrayHour + 5) {
-      // 3 4 5
-      return false
-    } else {
-      console.log('未知的時段1')
-    }
-  } else if (apiFirstArrayHour === 21) {
-    if (apiFirstArrayHour <= hh && hh <= apiFirstArrayHour + 2) {
-      // 21 22 23
-      return true
-    } else if (apiFirstArrayHour - 21 <= hh && hh <= apiFirstArrayHour - 21 + 2) {
-      // 0 1 2
-      return false
-    } else {
-      console.log('未知的時段2')
-    }
+  if (apiFirstArrayHour === 21 && (hh === 0 || hh === 1 || hh === 2)) {
+    return false
+  } else if (apiFirstArrayHour === 0 && (hh === 21 || hh === 22 || hh === 23)) {
+    return true
+  } else {
+    return apiFirstArrayHour <= hh
   }
 }

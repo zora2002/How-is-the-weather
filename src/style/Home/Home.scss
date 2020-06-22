@@ -1,3 +1,5 @@
+$homeAreaBg : rgba(243, 243, 243, 0.63);
+
 .dashboard {
   width: 95%;
   height: 100vh;
@@ -11,7 +13,7 @@
     .twenty-four-hours {
       width: 62%;
       height: inherit;
-      background-color: #fbfbfbcc;
+      background-color: $homeAreaBg;
       float: left;
       border-radius: 3vh;
       font-size: 2.2vh;
@@ -27,7 +29,7 @@
     .now-info {
       width: 35%;
       height: inherit;
-      background-color: #fbfbfbcc;
+      background-color: $homeAreaBg;
       float: right;
       border-radius: 3vh;
     }
@@ -40,14 +42,14 @@
     .sun-moon-time {
       width: 32%;
       height: inherit;
-      background-color: #fbfbfbcc;
+      background-color: $homeAreaBg;
       float: left;
       border-radius: 3vh;
     }
     .week-info {
       width: 65%;
       height: inherit;
-      background-color: #fbfbfbcc;
+      background-color: $homeAreaBg;
       float: right;
       border-radius: 3vh;
     }

@@ -23,12 +23,13 @@ const TwentyFourHours = ({ apiCity2Day1WeekForecast }) => {
 
         const wx = city2Day1WeekForecast.find((i) => i.elementName === 'Wx') // 天氣現象
         let countIconList = []
-        // wx.time.map((i, index) => index < 10 && countIconList.push(i.elementValue[0].value))
-        wx.time.map((i, index) => index < 10 && countIconList.push('sunny_and_cloudy'))
+        wx.time.map((i, index) => index < 10 && countIconList.push(parseInt(i.elementValue[1].value)))
 
         let combineList = []
         countTimeList.map((i, index) => combineList.push({ time: i, icon: countIconList[index] }))
         setTimeIconList(combineList)
+
+        console.log(combineList)
 
         // svg
         let temperatureList = []
@@ -55,7 +56,7 @@ const TwentyFourHours = ({ apiCity2Day1WeekForecast }) => {
         {timeIconList.map((i, index) => (
           <li key={index}>
             <div>{i.time}</div>
-            <img src={require(`../../img/${i.icon}.svg`)} alt="" />
+            <img src={require(`../../img/icon/${i.icon}.svg`)} alt="" />
           </li>
         ))}
       </ul>
