@@ -3,6 +3,7 @@ import '../style/Home/Home.scss'
 import '../style/Home/NowInfo.scss'
 import TwentyFourHours from '../components/Home/TwentyFourHours'
 import NowInfo from '../components/Home/NowInfo'
+import WeekInfo from '../components/Home/WeekInfo'
 import { changeStandardTime } from '../function/time'
 import { city2Day1WeekForecast, country36HoursForecast } from '../config/apiList'
 
@@ -47,6 +48,21 @@ const Home = () => {
     }
     getApiCity2DayForecast()
 
+    const getApiCity1WeekForecast = () => {
+      const params = {}
+      city2Day1WeekForecast(params, searchCity, 7)
+        .then((response) => {
+          const city = response.data.records.locations[0].location
+          const district = city.find((i) => i.locationName === searchDistrict)
+          const weatherElement = district.weatherElement
+          setApiCity1WeekForecast(weatherElement)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+    getApiCity1WeekForecast()
+
     const getApiCountry36HoursForecast = () => {
       const params = { locationName: searchCity }
       country36HoursForecast(params)
@@ -78,7 +94,8 @@ const Home = () => {
           </div>
           <div className="down-area">
             <div className="sun-moon-time"></div>
-            <div className="week-info"></div>
+
+            <WeekInfo apiCity1WeekForecast={apiCity1WeekForecast} />
           </div>
         </>
       )}

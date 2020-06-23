@@ -152,7 +152,7 @@ export function getTimePeriod(city, time) {
   console.log(timePeriodList[1][timePeriodIndex])
   return timePeriodList[1][timePeriodIndex]
 }
-
+// 當前氣溫要選[0]還是[1]
 export function isApiFirstArrayHour(apiFirstArrayHour) {
   const now = new Date()
   const hh = now.getHours()
@@ -162,6 +162,6 @@ export function isApiFirstArrayHour(apiFirstArrayHour) {
   } else if (apiFirstArrayHour === 0 && (hh === 21 || hh === 22 || hh === 23)) {
     return true
   } else {
-    return apiFirstArrayHour <= hh
+    return apiFirstArrayHour >= hh
   }
 }

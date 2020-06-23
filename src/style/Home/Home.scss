@@ -1,4 +1,4 @@
-$homeAreaBg : rgba(243, 243, 243, 0.63);
+$homeAreaBg : rgba(255, 255, 255, 0.85);
 
 .dashboard {
   width: 95%;
@@ -7,7 +7,7 @@ $homeAreaBg : rgba(243, 243, 243, 0.63);
   float: right;
   .up-area {
     width: 94%;
-    height: 40vh;
+    height: 38vh;
     // background-color: #646464;
     margin: 5vh auto 0;
     .twenty-four-hours {
@@ -36,22 +36,31 @@ $homeAreaBg : rgba(243, 243, 243, 0.63);
   }
   .down-area {
     width: 94%;
-    height: 45vh;
+    height: 47vh;
     // background-color: #646464;
     margin: 5vh auto 0;
     .sun-moon-time {
-      width: 32%;
+      width: 33%;
       height: inherit;
       background-color: $homeAreaBg;
       float: left;
       border-radius: 3vh;
     }
     .week-info {
-      width: 65%;
+      width: 64%;
       height: inherit;
       background-color: $homeAreaBg;
       float: right;
       border-radius: 3vh;
+      font-size: 2.2vh;
+      text-align: center;
+      letter-spacing: 0.8px;
+      ul {
+        display: flex;
+        justify-content: space-between;
+        margin: auto;
+        // background-color: rgb(182, 149, 107);
+      }
     }
   }
 }

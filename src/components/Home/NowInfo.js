@@ -11,32 +11,28 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
 
   React.useEffect(() => {
     const getTemperatureRain = () => {
-      console.log('api-2-現在/更新:' + new Date(), city2Day1WeekForecast)
+      console.log('api-2-NowInfo.js/更新:' + new Date())
 
-      if (city2Day1WeekForecast) {
-        const t = city2Day1WeekForecast.find((i) => i.elementName === 'T') // 溫度
-        const tIndex = isApiFirstArrayHour(t.time[0].dataTime) ? 0 : 1
-        setTemperature(t.time[tIndex].elementValue[0].value)
-        const pop6h = city2Day1WeekForecast.find((i) => i.elementName === 'PoP6h') // 6小時降雨機率
-        setRain(pop6h.time[0].elementValue[0].value)
-      }
+      const t = city2Day1WeekForecast.find((i) => i.elementName === 'T') // 溫度
+      const tIndex = isApiFirstArrayHour(t.time[0].dataTime) ? 0 : 1
+      setTemperature(t.time[tIndex].elementValue[0].value)
+      const pop6h = city2Day1WeekForecast.find((i) => i.elementName === 'PoP6h') // 6小時降雨機率
+      setRain(pop6h.time[0].elementValue[0].value)
     }
-    getTemperatureRain()
+    city2Day1WeekForecast && getTemperatureRain()
 
     return () => {}
   }, [city2Day1WeekForecast])
 
   React.useEffect(() => {
     const getDescribe = () => {
-      console.log('api-36-現在/更新:' + new Date(), country36HoursForecast)
+      console.log('api-36-NowInfo.js/更新:' + new Date())
 
-      if (country36HoursForecast) {
-        const wx = country36HoursForecast.find((i) => i.elementName === 'Wx') // 天氣現象
-        setDescribe(wx.time[0].parameter.parameterName)
-        setIcon(wx.time[0].parameter.parameterValue)
-      }
+      const wx = country36HoursForecast.find((i) => i.elementName === 'Wx') // 天氣現象
+      setDescribe(wx.time[0].parameter.parameterName)
+      setIcon(wx.time[0].parameter.parameterValue)
     }
-    getDescribe()
+    country36HoursForecast && getDescribe()
 
     return () => {}
   }, [country36HoursForecast])
