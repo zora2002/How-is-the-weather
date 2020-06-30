@@ -5,7 +5,7 @@ import Home from './page/Home'
 import { changeStandardTime, getTimePeriod } from './function/time'
 
 const searchCity = '臺中市'
-const searchDistrict = '西屯區'
+// const searchDistrict = '西屯區'
 
 const App = () => {
   const [time, setTime] = React.useState(new Date())
@@ -29,7 +29,7 @@ const App = () => {
   return (
     <div className={`App time-period ${timePeriod}`}>
       <SideBar />
-      <Home />
+      <Home time={time} />
     </div>
   )
 }
