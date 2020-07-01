@@ -1,7 +1,9 @@
 import React from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './App.scss'
 import SideBar from './components/SideBar'
 import Home from './page/Home'
+import Setting from './page/Setting'
 import { changeStandardTime, getTimePeriod } from './function/time'
 
 const searchCity = '臺中市'
@@ -27,10 +29,19 @@ const App = () => {
     }
   }, [time])
   return (
-    <div className={`App time-period ${timePeriod}`}>
-      <SideBar />
-      <Home time={time} />
-    </div>
+    <Router>
+      <div className={`App time-period ${timePeriod}`}>
+        <SideBar />
+        <Switch>
+          <Route exact path="/">
+            <Home time={time} />
+          </Route>
+          <Route exact path="/setting">
+            <Setting />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   )
 }
 

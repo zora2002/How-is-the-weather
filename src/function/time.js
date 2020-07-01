@@ -172,10 +172,10 @@ export function getTimePeriod(city, time) {
 }
 
 /**
- * isApiFirstArrayHour 當前氣溫要選[0]還是[1]
- * @param  {String} apiFirstArrayHour YYYY-MM-DD hh:mm:ss
+ * isApi3hrFirstArrayHour 當前氣溫要選[0]還是[1](3小時間距)
+ * @param  {String} api3hrFirstArrayHour YYYY-MM-DD hh:mm:ss
  */
-export function isApiFirstArrayHour(apiFirstArrayHour) {
+export function isApi3hrFirstArrayHour(apiFirstArrayHour) {
   const now = new Date()
   const nowHour = now.getHours()
   apiFirstArrayHour = new Date(apiFirstArrayHour).getHours()
@@ -192,6 +192,25 @@ export function isApiFirstArrayHour(apiFirstArrayHour) {
   } else if (apiFirstArrayHour <= nowHour || nowHour <= apiFirstArrayHour + 2) {
     return true
   } else {
-    console.log('isApiFirstArrayHour捕捉到遺漏情境', `apiFirstArrayHour: ${apiFirstArrayHour}`, `nowHour: ${nowHour}`)
+    console.log('isApi3hrFirstArrayHour', `apiFirstArrayHour: ${apiFirstArrayHour}`, `nowHour: ${nowHour}`)
   }
+}
+
+/**
+ * isApi12hrFirstArrayHour 要選[0]還是[1](12小時間距)
+ * @param  {String} api3hrFirstArrayHour YYYY-MM-DD hh:mm:ss
+ */
+export function isApi12hrFirstArrayHour(array1) {
+  const array1Hour = new Date(array1.startTime).getHours()
+  if (array1Hour === 6 || array1Hour === 12) {
+    return true
+  } else if (array1Hour === 0 || array1Hour === 18) {
+    return false
+  } else {
+    console.log('isApi12hrFirstArrayHour捕捉到遺漏情境', `array1: ${array1}`, `array1Hour: ${array1Hour}`)
+  }
+}
+
+export function removeArrayFirstItem(arrayList) {
+  return arrayList.slice(1, arrayList.length)
 }

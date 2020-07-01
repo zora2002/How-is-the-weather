@@ -28,11 +28,13 @@ const Home = ({ time }) => {
 
   React.useEffect(() => {
     const getApiCity2DayForecast = () => {
-      const params = {}
+      const params = {
+        locationName: searchDistrict,
+      }
       city2Day1WeekForecast(params, searchCity, 2)
         .then((response) => {
           const city = response.data.records.locations[0].location
-          const district = city.find((i) => i.locationName === searchDistrict)
+          const district = city[0]
           const weatherElement = district.weatherElement
           setApiCity2DayForecast(weatherElement)
         })
@@ -43,11 +45,13 @@ const Home = ({ time }) => {
     getApiCity2DayForecast()
 
     const getApiCity1WeekForecast = () => {
-      const params = {}
+      const params = {
+        locationName: searchDistrict,
+      }
       city2Day1WeekForecast(params, searchCity, 7)
         .then((response) => {
           const city = response.data.records.locations[0].location
-          const district = city.find((i) => i.locationName === searchDistrict)
+          const district = city[0]
           const weatherElement = district.weatherElement
           setApiCity1WeekForecast(weatherElement)
         })

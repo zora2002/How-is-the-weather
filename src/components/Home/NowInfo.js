@@ -1,8 +1,7 @@
 import React from 'react'
-import { changeStandardTime, isApiFirstArrayHour } from '../../function/time'
+import { changeStandardTime, isApi3hrFirstArrayHour } from '../../function/time'
 
 const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
-  const city2Day1WeekForecast = apiCity2DayForecast
   const country36HoursForecast = apiCountry36HoursForecast
   const [temperature, setTemperature] = React.useState('')
   const [rain, setRain] = React.useState('')
@@ -13,16 +12,16 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
     const getTemperatureRain = () => {
       console.log('api-2-NowInfo.js/更新:' + new Date())
 
-      const t = city2Day1WeekForecast.find((i) => i.elementName === 'T') // 溫度
-      const tIndex = isApiFirstArrayHour(t.time[0].dataTime) ? 0 : 1
+      const t = apiCity2DayForecast.find((i) => i.elementName === 'T') // 溫度
+      const tIndex = isApi3hrFirstArrayHour(t.time[0].dataTime) ? 0 : 1
       setTemperature(t.time[tIndex].elementValue[0].value)
-      const pop6h = city2Day1WeekForecast.find((i) => i.elementName === 'PoP6h') // 6小時降雨機率
+      const pop6h = apiCity2DayForecast.find((i) => i.elementName === 'PoP6h') // 6小時降雨機率
       setRain(pop6h.time[0].elementValue[0].value)
     }
-    city2Day1WeekForecast && getTemperatureRain()
+    apiCity2DayForecast && getTemperatureRain()
 
     return () => {}
-  }, [city2Day1WeekForecast])
+  }, [apiCity2DayForecast])
 
   React.useEffect(() => {
     const getDescribe = () => {

@@ -1,10 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="27.726" height="23" viewBox="0 0 27.726 23">
-  <g id="設定" transform="translate(-29.75 -167)">
-    <line id="直线_7" data-name="直线 7" x2="26.226" transform="translate(30.5 169.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
-    <line id="直线_8" data-name="直线 8" x2="26.226" transform="translate(30.5 178.67)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
-    <line id="直线_9" data-name="直线 9" x2="26.226" transform="translate(30.5 187.84)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
-    <circle id="椭圆_17" data-name="椭圆 17" cx="2.5" cy="2.5" r="2.5" transform="translate(48 167)" fill="#fff"/>
-    <circle id="椭圆_18" data-name="椭圆 18" cx="2.5" cy="2.5" r="2.5" transform="translate(36 176)" fill="#fff"/>
-    <circle id="椭圆_19" data-name="椭圆 19" cx="2.5" cy="2.5" r="2.5" transform="translate(45 185)" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="30" viewBox="0 0 35 30">
+  <g id="設定" transform="translate(-25 -166)">
+    <rect id="矩形_57" data-name="矩形 57" width="35" height="30" transform="translate(25 166)" fill="none"/>
+    <g id="组_92" data-name="组 92" transform="translate(-1 1)">
+      <line id="直线_7" data-name="直线 7" x2="26.854" transform="translate(30.5 169.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+      <line id="直线_8" data-name="直线 8" x2="26.854" transform="translate(30.5 178.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+      <line id="直线_9" data-name="直线 9" x2="26.854" transform="translate(30.5 187.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+      <circle id="椭圆_17" data-name="椭圆 17" cx="2.5" cy="2.5" r="2.5" transform="translate(49 167)" fill="#fff"/>
+      <circle id="椭圆_18" data-name="椭圆 18" cx="2.5" cy="2.5" r="2.5" transform="translate(36 176)" fill="#fff"/>
+      <circle id="椭圆_19" data-name="椭圆 19" cx="2.5" cy="2.5" r="2.5" transform="translate(45 185)" fill="#fff"/>
+    </g>
   </g>
 </svg>

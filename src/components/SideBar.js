@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import '../style/SideBar.scss'
 
 const SideBar = () => {
@@ -6,10 +7,14 @@ const SideBar = () => {
     <div className="side-bar">
       <ul>
         <li>
-          <img src={require('../img/home.svg')} alt="首頁" />
+          <Link to="/">
+            <img src={require('../img/home.svg')} alt="首頁" />
+          </Link>
         </li>
         <li>
-          <img src={require('../img/setting.svg')} alt="設定" />
+          <Link to="/setting">
+            <img src={require('../img/setting.svg')} alt="設定" />
+          </Link>
         </li>
       </ul>
     </div>
