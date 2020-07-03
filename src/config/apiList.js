@@ -14,7 +14,8 @@ export function city2Day1WeekForecast(params, city, day) {
   let code = ''
   const index = cityDistricts.cities.findIndex((element) => element === city)
   if (index !== -1) {
-    code = '0' + (4 * index + (day === 2 ? 1 : 3))
+    let number = 4 * index + (day === 2 ? 1 : 3)
+    code = number < 10 ? '00' + number : '0' + number
   } else {
     console.log('查無此縣市： ' + city)
   }

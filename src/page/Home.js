@@ -8,10 +8,7 @@ import SunMoonTime from '../components/Home/SunMoonTime'
 import { changeStandardTime } from '../function/time'
 import { city2Day1WeekForecast, country36HoursForecast } from '../config/apiList'
 
-const searchCity = '臺中市'
-const searchDistrict = '西屯區'
-
-const Home = ({ time }) => {
+const Home = ({ time, location }) => {
   const [hour, setHour] = React.useState(changeStandardTime(new Date(), 'hh'))
   const [apiCity2DayForecast, setApiCity2DayForecast] = React.useState(null)
   const [apiCity1WeekForecast, setApiCity1WeekForecast] = React.useState(null)
@@ -29,9 +26,9 @@ const Home = ({ time }) => {
   React.useEffect(() => {
     const getApiCity2DayForecast = () => {
       const params = {
-        locationName: searchDistrict,
+        locationName: location.searchDistrict,
       }
-      city2Day1WeekForecast(params, searchCity, 2)
+      city2Day1WeekForecast(params, location.searchCity, 2)
         .then((response) => {
           const city = response.data.records.locations[0].location
           const district = city[0]
@@ -46,9 +43,9 @@ const Home = ({ time }) => {
 
     const getApiCity1WeekForecast = () => {
       const params = {
-        locationName: searchDistrict,
+        locationName: location.searchDistrict,
       }
-      city2Day1WeekForecast(params, searchCity, 7)
+      city2Day1WeekForecast(params, location.searchCity, 7)
         .then((response) => {
           const city = response.data.records.locations[0].location
           const district = city[0]
@@ -62,7 +59,7 @@ const Home = ({ time }) => {
     getApiCity1WeekForecast()
 
     const getApiCountry36HoursForecast = () => {
-      const params = { locationName: searchCity }
+      const params = { locationName: location.searchCity }
       country36HoursForecast(params)
         .then((response) => {
           const city = response.data.records.location[0]
@@ -76,7 +73,7 @@ const Home = ({ time }) => {
     getApiCountry36HoursForecast()
 
     return () => {}
-  }, [hour])
+  }, [hour, location.searchCity, location.searchDistrict])
 
   return (
     <div className="dashboard">
@@ -91,7 +88,7 @@ const Home = ({ time }) => {
             />
           </div>
           <div className="down-area">
-            <SunMoonTime time={time} hour={hour} />
+            <SunMoonTime time={time} hour={hour} location={location} />
             <WeekInfo apiCity1WeekForecast={apiCity1WeekForecast} />
           </div>
         </>

@@ -2,8 +2,6 @@ import React from 'react'
 import '../../style/Home/SunMoonTime.scss'
 import { getSunMoonData, minutesGap, changeStandardTime, splitTime } from '../../function/time'
 
-const searchCity = '臺中市'
-
 const center = { x: 250, y: 250 }
 const sunR = 200
 const moonR = 100
@@ -61,7 +59,7 @@ const translateHandler = (nowTime, rise, set, riseTomorrow) => {
   return { x: Math.cos(radians), y: Math.sin(radians) }
 }
 
-const SunMoonTime = ({ time, hour }) => {
+const SunMoonTime = ({ time, hour, location }) => {
   const nowTime = changeStandardTime(time, 'hh:mm')
   const nowHour = hour
   const [sunrise, setSunrise] = React.useState('')
@@ -74,22 +72,30 @@ const SunMoonTime = ({ time, hour }) => {
   const [moonTrans, setMoonTrans] = React.useState('translate(0 0)')
 
   React.useEffect(() => {
-    const sunTimeList = getSunMoonData('sun', searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD')).parameter
+    const sunTimeList = getSunMoonData('sun', location.searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD'))
+      .parameter
     setSunrise(sunTimeList.find((i) => i.parameterName === '日出時刻').parameterValue)
     setSunset(sunTimeList.find((i) => i.parameterName === '日沒時刻').parameterValue)
-    const sunTimeTomorrowList = getSunMoonData('sun', searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD+1'))
-      .parameter
+    const sunTimeTomorrowList = getSunMoonData(
+      'sun',
+      location.searchCity,
+      changeStandardTime(new Date(), 'YYYY-MM-DD+1')
+    ).parameter
     setSunriseTomorrow(sunTimeTomorrowList.find((i) => i.parameterName === '日出時刻').parameterValue)
 
-    const moonTimeList = getSunMoonData('moon', searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD')).parameter
+    const moonTimeList = getSunMoonData('moon', location.searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD'))
+      .parameter
     setMoonrise(moonTimeList.find((i) => i.parameterName === '月出時刻').parameterValue)
     setMoonset(moonTimeList.find((i) => i.parameterName === '月沒時刻').parameterValue)
-    const moonTimeTomorrowList = getSunMoonData('moon', searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD+1'))
-      .parameter
+    const moonTimeTomorrowList = getSunMoonData(
+      'moon',
+      location.searchCity,
+      changeStandardTime(new Date(), 'YYYY-MM-DD+1')
+    ).parameter
     setMoonriseTomorrow(moonTimeTomorrowList.find((i) => i.parameterName === '月出時刻').parameterValue)
 
     return () => {}
-  }, [nowHour])
+  }, [location.searchCity, nowHour])
 
   React.useEffect(() => {
     const setPosition = () => {

@@ -5,8 +5,9 @@ import SideBar from './components/SideBar'
 import Wallpaper from './components/Wallpaper'
 import Home from './page/Home'
 import Setting from './page/Setting'
+import { connect } from 'react-redux'
 
-const App = () => {
+const App = ({ location }) => {
   const [time, setTime] = React.useState(new Date())
 
   React.useEffect(() => {
@@ -17,15 +18,15 @@ const App = () => {
     return () => {
       clearInterval(getNowTime)
     }
-  }, [time])
+  }, [time, location])
   return (
     <Router>
       <div className="App">
         <SideBar />
         <Switch>
           <Route exact path="/">
-            <Wallpaper time={time} />
-            <Home time={time} />
+            <Wallpaper time={time} location={location} />
+            <Home time={time} location={location} />
           </Route>
           <Route exact path="/setting">
             <Setting />
@@ -36,4 +37,11 @@ const App = () => {
   )
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    location: state.location,
+  }
+}
+
+// export default App
+export default connect(mapStateToProps)(App)
