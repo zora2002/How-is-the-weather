@@ -9,6 +9,8 @@ import moon from '../doc/moon.json'
 export function changeStandardTime(time, type) {
   if (type === 'YYYY-MM-DD+1') {
     time = new Date(time.getTime() + 24 * 60 * 60 * 1000)
+  } else if (type === 'YYYY-MM-DD-1') {
+    time = new Date(time.getTime() - 24 * 60 * 60 * 1000)
   } else {
     // time = time
   }
@@ -32,7 +34,7 @@ export function changeStandardTime(time, type) {
     result = `${MM}/${DD} ${hh}:${mm}`
   } else if (type === 'MonthEnglish/DD hh:mm') {
     result = `${monthInEnglish[MM]} ${DD} ${hh}:${mm}`
-  } else if (type === 'YYYY-MM-DD' || type === 'YYYY-MM-DD+1') {
+  } else if (type === 'YYYY-MM-DD' || type === 'YYYY-MM-DD+1' || type === 'YYYY-MM-DD-1') {
     result = `${YYYY}-${MM}-${DD}`
   } else if (type === 'YYYY-MM-DD hh:mm:ss') {
     result = `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`
