@@ -12,7 +12,7 @@ const WeekInfo = ({ apiCity1WeekForecast }) => {
 
   React.useEffect(() => {
     const getTemperature = () => {
-      console.log('api-7-WeekInfo.js/更新:' + new Date())
+      console.log('API-apiCity1WeekForecast/更新:' + new Date())
 
       // up-list
       const wx = apiCity1WeekForecast.find((i) => i.elementName === 'Wx') // 平均溫度

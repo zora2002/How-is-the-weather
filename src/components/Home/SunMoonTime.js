@@ -1,60 +1,122 @@
 import React from 'react'
 import '../../style/Home/SunMoonTime.scss'
-import { getSunMoonData, minutesGap, changeStandardTime, splitTime } from '../../function/time'
+import { getSunMoonData, changeStandardTime, timeToMinutes } from '../../function/time'
 
 const center = { x: 250, y: 250 }
 const sunR = 200
 const moonR = 100
 const moonOffset = { x: 35, y: 28 }
 
-const translateHandler = (nowTime, rise, set, riseTomorrow) => {
-  const nowTimeTotalMin = splitTime(nowTime).hh * 60 + splitTime(nowTime).mm
-  const riseTotalMin = splitTime(rise).hh * 60 + splitTime(rise).mm
-  const setTotalMin = splitTime(set).hh * 60 + splitTime(set).mm
-  const riseTomorrowTotalMin = splitTime(riseTomorrow).hh * 60 + splitTime(riseTomorrow).mm
+const mooveTypeHandler = (riseToday, setToday) => {
+  if (riseToday && setToday) {
+    const setSubtractRise = timeToMinutes(setToday) - timeToMinutes(riseToday)
+    return setSubtractRise > 0 ? 'A' : 'C'
+  } else if (!riseToday && setToday) {
+    return 'D'
+  } else if (riseToday && !setToday) {
+    return 'B'
+  } else {
+    console.log('Something is wrong in "mooveTypeHandler"...')
+  }
+}
+
+const nowAngle = (totalTime, nowTime) => {
+  return (180 * nowTime) / totalTime
+}
+
+const translateHandler = (nowTime, riseYesterday, setYesterday, riseToday, setToday, riseTomorrow, setTomorrow) => {
+  const mooveType = mooveTypeHandler(riseToday, setToday)
+
+  const nowTimeTotalMin = timeToMinutes(nowTime)
+
+  const riseYesterdayTotalMin = timeToMinutes(riseYesterday)
+  const surplusRiseYesterdayTotalMin = 24 * 60 - riseYesterdayTotalMin
+  const setYesterdayTotalMin = timeToMinutes(setYesterday)
+  const surplusSetYesterdayTotalMin = 24 * 60 - setYesterdayTotalMin
+
+  const riseTotalMin = timeToMinutes(riseToday)
+  const surplusRiseTotalMin = 24 * 60 - riseTotalMin
+  const setTotalMin = timeToMinutes(setToday)
+  const surplusSetTotalMin = 24 * 60 - setTotalMin
+
+  const riseTomorrowTotalMin = timeToMinutes(riseTomorrow)
+  const setTomorrowTotalMin = timeToMinutes(setTomorrow)
 
   let angle = 0
-  if (riseTotalMin < setTotalMin) {
-    if (riseTotalMin <= nowTimeTotalMin && nowTimeTotalMin <= setTotalMin) {
-      if (nowTimeTotalMin === setTotalMin) {
-        angle = -180
-      } else if (nowTimeTotalMin === riseTotalMin) {
-        angle = -0
-      } else {
-        angle = -(minutesGap(rise, nowTime) * 180) / minutesGap(rise, set)
-      }
-      console.log('position1', angle)
+  if (mooveType === 'A') {
+    if (nowTime === riseToday) {
+      angle = 0
+    } else if (nowTime === setToday) {
+      angle = 180
     } else {
-      if (12 * 60 < nowTimeTotalMin && nowTimeTotalMin > setTotalMin) {
-        angle = -180 + -(minutesGap(nowTime, set) * 180) / (minutesGap(set, '23:59') + riseTomorrowTotalMin)
-        console.log('position2', angle)
-      } else {
+      if (nowTimeTotalMin < riseTotalMin) {
+        // position-A-1
+        console.log('position-A-1')
         angle =
-          -180 +
-          -((minutesGap(set, '23:59') + nowTimeTotalMin) * 180) / (minutesGap(set, '23:59') + riseTomorrowTotalMin)
-        console.log('position3', angle)
+          180 + nowAngle(surplusSetYesterdayTotalMin + riseTotalMin, surplusSetYesterdayTotalMin + nowTimeTotalMin)
+      } else if (riseTotalMin < nowTimeTotalMin && nowTimeTotalMin < setTotalMin) {
+        // position-A-2
+        console.log('position-A-2')
+        angle = nowAngle(setTotalMin - riseTotalMin, nowTimeTotalMin - riseTotalMin)
+      } else {
+        // position-A-3
+        console.log('position-A-3')
+        angle = 180 + nowAngle(surplusSetTotalMin + riseTomorrowTotalMin, nowTimeTotalMin - setTotalMin)
+      }
+    }
+  } else if (mooveType === 'B') {
+    if (nowTime === riseToday) {
+      angle = 0
+    } else {
+      if (nowTimeTotalMin < riseTotalMin) {
+        // position-B-1
+        console.log('position-B-1')
+        angle =
+          180 + nowAngle(surplusSetYesterdayTotalMin + riseTotalMin, surplusSetYesterdayTotalMin + nowTimeTotalMin)
+      } else {
+        // position-B-2
+        console.log('position-B-2')
+        angle = nowAngle(surplusRiseTotalMin + setTomorrowTotalMin, nowTimeTotalMin - riseTotalMin)
+      }
+    }
+  } else if (mooveType === 'C') {
+    if (nowTime === riseToday) {
+      angle = 0
+    } else if (nowTime === setToday) {
+      angle = 180
+    } else {
+      if (nowTimeTotalMin < setToday) {
+        // position-C-1
+        console.log('position-C-1')
+        angle = nowAngle(surplusRiseYesterdayTotalMin + setTotalMin, surplusRiseYesterdayTotalMin + nowTimeTotalMin)
+      } else if (setTotalMin < nowTimeTotalMin && nowTimeTotalMin < riseTotalMin) {
+        // position-C-2
+        console.log('position-C-2')
+        angle = 180 + nowAngle(riseTotalMin - setTotalMin, nowTimeTotalMin - setTotalMin)
+      } else {
+        // position-C-3
+        console.log('position-C-3')
+        angle = nowAngle(surplusRiseTotalMin + setTomorrowTotalMin, nowTimeTotalMin - riseTotalMin)
+      }
+    }
+  } else if (mooveType === 'D') {
+    if (nowTime === setToday) {
+      angle = 180
+    } else {
+      if (nowTimeTotalMin < setTotalMin) {
+        // position-D-1
+        console.log('position-D-1')
+        angle = nowAngle(surplusRiseYesterdayTotalMin + setTotalMin, surplusRiseYesterdayTotalMin + nowTimeTotalMin)
+      } else {
+        // position-D-2
+        console.log('position-D-2')
+        angle = 180 + nowAngle(surplusSetTotalMin + riseTomorrowTotalMin, nowTimeTotalMin - setTotalMin)
       }
     }
   } else {
-    if (setTotalMin <= nowTimeTotalMin && nowTimeTotalMin <= riseTotalMin) {
-      if (nowTimeTotalMin === setTotalMin) {
-        angle = -180
-      } else if (nowTimeTotalMin === riseTotalMin) {
-        angle = -0
-      } else {
-        angle = -180 + -(minutesGap(set, nowTime) * 180) / minutesGap(set, riseTomorrow)
-      }
-      console.log('position4', angle)
-    } else {
-      if (12 * 60 < nowTimeTotalMin && nowTimeTotalMin > riseTotalMin) {
-        angle = -(minutesGap(nowTime, rise) * 180) / (minutesGap(rise, '23:59') + setTotalMin)
-        console.log('position5', angle)
-      } else {
-        angle = -((minutesGap(rise, '23:59') + nowTimeTotalMin) * 180) / (minutesGap(rise, '23:59') + setTotalMin)
-        console.log('position6', angle)
-      }
-    }
+    console.log('Something is wrong in "translateHandler"...')
   }
+  angle = -angle
   const radians = angle * (Math.PI / 180)
   return { x: Math.cos(radians), y: Math.sin(radians) }
 }
@@ -63,16 +125,16 @@ const SunMoonTime = ({ time, hour, location }) => {
   const nowTime = changeStandardTime(time, 'hh:mm')
   const nowHour = hour
 
+  const [sunsetYesterday, setSunsetYesterday] = React.useState('')
   const [sunrise, setSunrise] = React.useState('')
   const [sunset, setSunset] = React.useState('')
-  const [sunsetYesterday, setSunsetYesterday] = React.useState('')
   const [sunriseTomorrow, setSunriseTomorrow] = React.useState('')
   const [sunTrans, setSunTrans] = React.useState('translate(0 0)')
 
-  const [moonrise, setMoonrise] = React.useState('')
-  const [moonset, setMoonset] = React.useState('')
   const [moonriseYesterday, setMoonriseYesterday] = React.useState('')
   const [moonsetYesterday, setMoonsetYesterday] = React.useState('')
+  const [moonrise, setMoonrise] = React.useState('')
+  const [moonset, setMoonset] = React.useState('')
   const [moonriseTomorrow, setMoonriseTomorrow] = React.useState('')
   const [moonsetTomorrow, setMoonsetTomorrow] = React.useState('')
   const [moonTrans, setMoonTrans] = React.useState('translate(0 0)')
@@ -119,10 +181,18 @@ const SunMoonTime = ({ time, hour, location }) => {
 
   React.useEffect(() => {
     const setPosition = () => {
-      if (sunrise && sunset && sunriseTomorrow && moonrise && moonset && moonriseTomorrow) {
-        const sun = translateHandler(nowTime, sunrise, sunset, sunriseTomorrow)
+      if (sunrise && sunset && sunriseTomorrow) {
+        const sun = translateHandler(nowTime, '', sunsetYesterday, sunrise, sunset, sunriseTomorrow, '')
         setSunTrans(`translate(${center.x + sun.x * sunR} ${center.y + sun.y * sunR})`)
-        const moon = translateHandler(nowTime, moonrise, moonset, moonriseTomorrow)
+        const moon = translateHandler(
+          nowTime,
+          moonriseYesterday,
+          moonsetYesterday,
+          moonrise,
+          moonset,
+          moonriseTomorrow,
+          moonsetTomorrow
+        )
         setMoonTrans(
           `translate(${center.x - moonOffset.x + moon.x * moonR} ${center.y - moonOffset.y + moon.y * moonR})`
         )
@@ -132,7 +202,19 @@ const SunMoonTime = ({ time, hour, location }) => {
     setPosition()
 
     return () => {}
-  }, [moonrise, moonriseTomorrow, moonset, nowTime, sunrise, sunriseTomorrow, sunset])
+  }, [
+    moonrise,
+    moonriseTomorrow,
+    moonriseYesterday,
+    moonset,
+    moonsetTomorrow,
+    moonsetYesterday,
+    nowTime,
+    sunrise,
+    sunriseTomorrow,
+    sunset,
+    sunsetYesterday,
+  ])
 
   return (
     <div className="sun-moon-time">

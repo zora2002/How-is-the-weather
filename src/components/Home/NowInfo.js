@@ -10,7 +10,7 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
 
   React.useEffect(() => {
     const getTemperatureRain = () => {
-      console.log('api-2-NowInfo.js/更新:' + new Date())
+      console.log('API-apiCity2DayForecast/更新:' + new Date())
 
       const t = apiCity2DayForecast.find((i) => i.elementName === 'T') // 溫度
       const tIndex = isApi3hrFirstArrayHour(t.time[0].dataTime) ? 0 : 1
@@ -25,7 +25,7 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
 
   React.useEffect(() => {
     const getDescribe = () => {
-      console.log('api-36-NowInfo.js/更新:' + new Date())
+      console.log('API-apiCountry36HoursForecast/更新:' + new Date())
 
       const wx = country36HoursForecast.find((i) => i.elementName === 'Wx') // 天氣現象
       setDescribe(wx.time[0].parameter.parameterName)

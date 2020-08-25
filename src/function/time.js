@@ -50,11 +50,21 @@ export function changeStandardTime(time, type) {
  * @param  {String} time2 hh:mm
  */
 export function minutesGap(time1, time2) {
-  let time1mm = splitTime(time1).hh
-  let time1ss = splitTime(time1).mm
-  let time2mm = splitTime(time2).hh
-  let time2ss = splitTime(time2).mm
-  return Math.abs(time1mm * 60 + time1ss - (time2mm * 60 + time2ss))
+  let time1hh = splitTime(time1).hh
+  let time1mm = splitTime(time1).mm
+  let time2hh = splitTime(time2).hh
+  let time2mm = splitTime(time2).mm
+  return Math.abs(time1hh * 60 + time1mm - (time2hh * 60 + time2mm))
+}
+
+/**
+ * timeToMinutes 時間轉成分鐘數
+ * @param  {String} time1 hh:mm
+ */
+export function timeToMinutes(time) {
+  let timehh = splitTime(time).hh
+  let timemm = splitTime(time).mm
+  return timehh * 60 + timemm
 }
 
 /**

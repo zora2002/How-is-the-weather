@@ -11,7 +11,7 @@ const TwentyFourHours = ({ apiCity2DayForecast }) => {
 
   React.useEffect(() => {
     const getTemperature = () => {
-      console.log('api-2-TwentyFourHours.js/更新:' + new Date())
+      console.log('API-apiCity2DayForecast/更新:' + new Date())
 
       // up-list
       const t = city2Day1WeekForecast.find((i) => i.elementName === 'T') // 溫度
