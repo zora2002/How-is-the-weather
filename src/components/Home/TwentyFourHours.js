@@ -9,6 +9,11 @@ const TwentyFourHours = ({ apiCity2DayForecast }) => {
   const [svgInfoList, setSvgInfoList] = React.useState([])
   const [svgPathD, setSvgPathD] = React.useState('')
 
+  const checkIconTimeType = (time) => {
+    time = parseInt(time.slice(0, 2))
+    return time > 3 && time < 18 ? 'day' : 'night'
+  }
+
   React.useEffect(() => {
     const getTemperature = () => {
       console.log('API-apiCity2DayForecast/更新:' + new Date())
@@ -46,13 +51,14 @@ const TwentyFourHours = ({ apiCity2DayForecast }) => {
 
     return () => {}
   }, [city2Day1WeekForecast])
+
   return (
     <div className="twenty-four-hours">
       <ul className="up-list">
         {timeIconList.map((i, index) => (
           <li key={index}>
             <div>{i.time}</div>
-            <img src={require(`../../img/icon/${i.icon}.svg`)} alt="" />
+            <img src={require(`../../img/icon/${checkIconTimeType(i.time)}/${i.icon}.svg`)} alt="" />
           </li>
         ))}
       </ul>

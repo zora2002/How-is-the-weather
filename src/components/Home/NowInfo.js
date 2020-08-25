@@ -8,6 +8,11 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
   const [describe, setDescribe] = React.useState('')
   const [icon, setIcon] = React.useState(1)
 
+  const checkIconTimeType = () => {
+    const hour = parseInt(changeStandardTime(time, 'hh'))
+    return hour > 5 && hour < 18 ? 'day' : 'night'
+  }
+
   React.useEffect(() => {
     const getTemperatureRain = () => {
       console.log('API-apiCity2DayForecast/更新:' + new Date())
@@ -39,7 +44,7 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
   return (
     <div className="now-info">
       <div className="icon">
-        <img src={require(`../../img/icon/${icon}.svg`)} alt="" />
+        <img src={require(`../../img/icon/${checkIconTimeType()}/${icon}.svg`)} alt="" />
       </div>
       <div className="data">
         <div className="temperature">{temperature}℃</div>

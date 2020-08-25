@@ -87,7 +87,7 @@ const WeekInfo = ({ apiCity1WeekForecast }) => {
         {dateIconList.map((i, index) => (
           <li key={index}>
             <div>{i.date}</div>
-            <img src={require(`../../img/icon/${parseInt(i.icon[dayNightTime])}.svg`)} alt="" />
+            <img src={require(`../../img/icon/${dayNightTime}/${parseInt(i.icon[dayNightTime])}.svg`)} alt="" />
           </li>
         ))}
       </ul>
@@ -123,7 +123,7 @@ const WeekInfo = ({ apiCity1WeekForecast }) => {
       </svg>
       <ul className="down-list">
         {rainList[dayNightTime].map((i, index) => (
-          <li key={index}>{i}%</li>
+          <li key={index}>{i === ' ' ? '-' : `${i}%`}</li>
         ))}
       </ul>
     </div>
