@@ -1,11 +1,19 @@
 import monthInEnglish from '../config/monthInEnglish'
 import sun from '../doc/sun.json'
+import moon from '../doc/moon.json'
 /**
  * standardToYMDhm 標準時間轉換
  * @param  {String} time
  * @param  {String} type
  */
 export function changeStandardTime(time, type) {
+  if (type === 'YYYY-MM-DD+1') {
+    time = new Date(time.getTime() + 24 * 60 * 60 * 1000)
+  } else if (type === 'YYYY-MM-DD-1') {
+    time = new Date(time.getTime() - 24 * 60 * 60 * 1000)
+  } else {
+    // time = time
+  }
   let YYYY = time.getFullYear() // 年
   let MM = time.getMonth() + 1 // 月
   MM = MM < 10 ? '0' + MM : MM
@@ -26,7 +34,7 @@ export function changeStandardTime(time, type) {
     result = `${MM}/${DD} ${hh}:${mm}`
   } else if (type === 'MonthEnglish/DD hh:mm') {
     result = `${monthInEnglish[MM]} ${DD} ${hh}:${mm}`
-  } else if (type === 'YYYY-MM-DD') {
+  } else if (type === 'YYYY-MM-DD' || type === 'YYYY-MM-DD+1' || type === 'YYYY-MM-DD-1') {
     result = `${YYYY}-${MM}-${DD}`
   } else if (type === 'YYYY-MM-DD hh:mm:ss') {
     result = `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`
@@ -42,11 +50,25 @@ export function changeStandardTime(time, type) {
  * @param  {String} time2 hh:mm
  */
 export function minutesGap(time1, time2) {
-  let time1mm = splitTime(time1).hh
-  let time1ss = splitTime(time1).mm
-  let time2mm = splitTime(time2).hh
-  let time2ss = splitTime(time2).mm
-  return Math.abs(time1mm * 60 + time1ss - (time2mm * 60 + time2ss))
+  let time1hh = splitTime(time1).hh
+  let time1mm = splitTime(time1).mm
+  let time2hh = splitTime(time2).hh
+  let time2mm = splitTime(time2).mm
+  return Math.abs(time1hh * 60 + time1mm - (time2hh * 60 + time2mm))
+}
+
+/**
+ * timeToMinutes 時間轉成分鐘數
+ * @param  {String} time1 hh:mm
+ */
+export function timeToMinutes(time) {
+  if (time) {
+    let timehh = splitTime(time).hh
+    let timemm = splitTime(time).mm
+    return timehh * 60 + timemm
+  } else {
+    return `時間格式錯誤: ${time}`
+  }
 }
 
 /**
@@ -80,16 +102,28 @@ export function splitTime(time) {
 // }
 
 /**
+ * getSunMoonData 取得某天的日月出沒時間
+ * @param  {String} time hh:mm
+ * @param  {String} city 台灣縣市
+ * @param  {String} date YYYY-MM-DD
+ */
+export function getSunMoonData(time, city, date) {
+  time = time === 'sun' ? sun : moon
+  let list = time.cwbopendata.dataset.locations.location
+  const cityIndex = list.findIndex((i) => i.locationName === city)
+  list = list[cityIndex].time
+  const dateIndex = list.findIndex((i) => i.dataTime === date)
+  const data = list[dateIndex]
+  return data
+}
+
+/**
  * getTimePeriod 取得今日個時段列表
  * @param  {String} city 縣市
+ * @param  {String} time 現在幾點幾分hh:mm
  */
 export function getTimePeriod(city, time) {
-  let sunriseList = sun.cwbopendata.dataset.locations.location
-  const cityIndex = sunriseList.findIndex((i) => i.locationName === city)
-  sunriseList = sunriseList[cityIndex].time
-  const date = changeStandardTime(new Date(), 'YYYY-MM-DD')
-  const dateIndex = sunriseList.findIndex((i) => i.dataTime === date)
-  const data = sunriseList[dateIndex]
+  const data = getSunMoonData('sun', city, changeStandardTime(new Date(), 'YYYY-MM-DD'))
   const splitDayTwilight = {
     start: splitTime(data.parameter[0].parameterValue),
     end: splitTime(data.parameter[1].parameterValue),
@@ -151,4 +185,48 @@ export function getTimePeriod(city, time) {
   }
   console.log(timePeriodList[1][timePeriodIndex])
   return timePeriodList[1][timePeriodIndex]
+}
+
+/**
+ * isApi3hrFirstArrayHour 當前氣溫要選[0]還是[1](3小時間距)
+ * @param  {String} api3hrFirstArrayHour YYYY-MM-DD hh:mm:ss
+ */
+export function isApi3hrFirstArrayHour(apiFirstArrayHour) {
+  const now = new Date()
+  const nowHour = now.getHours()
+  apiFirstArrayHour = new Date(apiFirstArrayHour).getHours()
+  if (
+    (apiFirstArrayHour === 21 && (nowHour === 0 || nowHour === 1 || nowHour === 2)) ||
+    nowHour > apiFirstArrayHour + 2
+  ) {
+    return false
+  } else if (
+    (apiFirstArrayHour === 0 && (nowHour === 21 || nowHour === 22 || nowHour === 23)) ||
+    nowHour < apiFirstArrayHour
+  ) {
+    return true
+  } else if (apiFirstArrayHour <= nowHour || nowHour <= apiFirstArrayHour + 2) {
+    return true
+  } else {
+    console.log('isApi3hrFirstArrayHour', `apiFirstArrayHour: ${apiFirstArrayHour}`, `nowHour: ${nowHour}`)
+  }
+}
+
+/**
+ * isApi12hrFirstArrayHour 要選[0]還是[1](12小時間距)
+ * @param  {String} api3hrFirstArrayHour YYYY-MM-DD hh:mm:ss
+ */
+export function isApi12hrFirstArrayHour(array1) {
+  const array1Hour = new Date(array1.startTime).getHours()
+  if (array1Hour === 6 || array1Hour === 12) {
+    return true
+  } else if (array1Hour === 0 || array1Hour === 18) {
+    return false
+  } else {
+    console.log('isApi12hrFirstArrayHour捕捉到遺漏情境', `array1: ${array1}`, `array1Hour: ${array1Hour}`)
+  }
+}
+
+export function removeArrayFirstItem(arrayList) {
+  return arrayList.slice(1, arrayList.length)
 }
