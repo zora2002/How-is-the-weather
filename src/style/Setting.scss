@@ -1,0 +1,55 @@
+.setting-bg {
+  width: 95%;
+  height: 100vh;
+  background-color: #f8f8f8;
+  float: right;
+  font-size: 2.5vh;
+  color: #424242;
+  .setting {
+    width: 90%;
+    height: 75vh;
+    margin: 5vh auto;
+    padding: 7vh 0;
+    border: 0.3vh rgb(197, 197, 197) solid;
+    border-radius: 5vh;
+    li {
+      // background-color: palegoldenrod;
+      width: 90%;
+      height: 5vh;
+      margin: 3.5vh auto;
+      line-height: 5vh;
+    }
+    .item {
+      // background-color: paleturquoise;
+      width: 17%;
+      margin: auto 0 auto 4%;
+      float: left;
+      letter-spacing: 2px
+    }
+    .content {
+      // background-color: pink;
+      width: 79%;
+      float: right;
+      select {
+        width: 20%;
+        height: 5vh;
+        margin: 0 2% 0 0;
+        padding: 5px;
+        font-size: 2vh;
+        border: 0;
+        border-radius: 1vh;
+        // 隱藏箭頭
+        // -moz-appearance: none;
+        // -webkit-appearance: none;
+      }
+      button {
+        height: 5vh;
+        padding: 0 2%;
+        font-size: 2vh;
+        border: 0;
+        border-radius: 0.5vh;
+        background: #d0efff;
+      }
+    }
+  }
+}
