@@ -7,11 +7,18 @@
   color: #424242;
   .setting {
     width: 90%;
-    height: 75vh;
+    height: 79vh;
     margin: 5vh auto;
-    padding: 7vh 0;
+    padding: 5vh 0;
     border: 0.3vh rgb(197, 197, 197) solid;
     border-radius: 5vh;
+    .setting-divider {
+      display: block;
+      width: 88%;
+      height: 0.2vh;
+      background-color: rgb(211, 211, 211);
+      margin: 7vh auto;
+    }
     li {
       // background-color: palegoldenrod;
       width: 90%;
@@ -49,6 +56,22 @@
         border: 0;
         border-radius: 0.5vh;
         background: #d0efff;
+      }
+      input[type="range"] {
+        overflow: hidden;
+        width: 50%;
+        height: 1.5vh;
+        margin: 1vh 3% 0 0;
+        -webkit-appearance: none;
+        background-color: #d8d8d8;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        width: 1vw;
+        height: 1vw;
+        cursor: ew-resize;
+        -webkit-appearance: none;
+        background: #579abb;
+        box-shadow: -20vw 0 0 20vw #d0efff;
       }
     }
   }

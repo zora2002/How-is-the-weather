@@ -1,5 +1,7 @@
 import React from 'react'
 import { changeStandardTime, isApi3hrFirstArrayHour } from '../../function/time'
+import DashboardDiv from '../../style/Home/DashboardDiv'
+import store from '../../store'
 
 const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
   const country36HoursForecast = apiCountry36HoursForecast
@@ -41,8 +43,10 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
     return () => {}
   }, [country36HoursForecast])
 
+  const backgroundColorOpacity = store.getState().dashboard.backgroundColorOpacity
+
   return (
-    <div className="now-info">
+    <DashboardDiv backgroundColorOpacity={backgroundColorOpacity} className="now-info">
       <div className="icon">
         <img src={require(`../../img/icon/${checkIconTimeType()}/${icon}.svg`)} alt="" />
       </div>
@@ -52,7 +56,7 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
         <div className="rain">{rain}%</div>
       </div>
       <div className="time">{changeStandardTime(time, 'MonthEnglish/DD hh:mm')}</div>
-    </div>
+    </DashboardDiv>
   )
 }
 

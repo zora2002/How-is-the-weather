@@ -2,6 +2,8 @@ import React from 'react'
 import '../../style/Home/WeekInfo.scss'
 import { setting2SVG } from '../../function/svg'
 import { isApi12hrFirstArrayHour, removeArrayFirstItem } from '../../function/time'
+import store from '../../store'
+import DashboardDiv from '../../style/Home/DashboardDiv'
 
 const WeekInfo = ({ apiCity1WeekForecast }) => {
   const [dateIconList, setdateIconList] = React.useState([])
@@ -81,8 +83,10 @@ const WeekInfo = ({ apiCity1WeekForecast }) => {
     setDayNightTime(newTime ? 'day' : 'night')
   }
 
+  const backgroundColorOpacity = store.getState().dashboard.backgroundColorOpacity
+
   return (
-    <div className="week-info">
+    <DashboardDiv backgroundColorOpacity={backgroundColorOpacity} className="week-info">
       <ul className="up-list">
         {dateIconList.map((i, index) => (
           <li key={index}>
@@ -126,7 +130,7 @@ const WeekInfo = ({ apiCity1WeekForecast }) => {
           <li key={index}>{i === ' ' ? '-' : `${i}%`}</li>
         ))}
       </ul>
-    </div>
+    </DashboardDiv>
   )
 }
 

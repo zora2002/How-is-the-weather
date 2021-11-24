@@ -1,6 +1,8 @@
 import React from 'react'
 import '../../style/Home/SunMoonTime.scss'
 import { getSunMoonData, changeStandardTime, timeToMinutes } from '../../function/time'
+import store from '../../store'
+import DashboardDiv from '../../style/Home/DashboardDiv'
 
 const center = { x: 250, y: 250 }
 const sunR = 200
@@ -216,8 +218,10 @@ const SunMoonTime = ({ time, hour, location }) => {
     sunsetYesterday,
   ])
 
+  const backgroundColorOpacity = store.getState().dashboard.backgroundColorOpacity
+
   return (
-    <div className="sun-moon-time">
+    <DashboardDiv backgroundColorOpacity={backgroundColorOpacity} className="sun-moon-time">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
         <g id="日月時間" transform="translate(0 0)">
           <g
@@ -263,7 +267,7 @@ const SunMoonTime = ({ time, hour, location }) => {
           </text>
         </g>
       </svg>
-    </div>
+    </DashboardDiv>
   )
 }
 
