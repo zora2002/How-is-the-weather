@@ -1,6 +1,8 @@
 import React from 'react'
 import '../../style/Home/TwentyFourHours.scss'
 import { settingSVG } from '../../function/svg'
+import store from '../../store'
+import DashboardDiv from '../../style/Home/DashboardDiv'
 
 const TwentyFourHours = ({ apiCity2DayForecast }) => {
   const city2Day1WeekForecast = apiCity2DayForecast
@@ -52,8 +54,10 @@ const TwentyFourHours = ({ apiCity2DayForecast }) => {
     return () => {}
   }, [city2Day1WeekForecast])
 
+  const backgroundColorOpacity = store.getState().dashboard.backgroundColorOpacity
+
   return (
-    <div className="twenty-four-hours">
+    <DashboardDiv backgroundColorOpacity={backgroundColorOpacity} className="twenty-four-hours">
       <ul className="up-list">
         {timeIconList.map((i, index) => (
           <li key={index}>
@@ -86,7 +90,7 @@ const TwentyFourHours = ({ apiCity2DayForecast }) => {
           <li key={index}>{i}%</li>
         ))}
       </ul>
-    </div>
+    </DashboardDiv>
   )
 }
 

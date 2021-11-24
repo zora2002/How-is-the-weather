@@ -76,6 +76,19 @@ const Setting = () => {
     navigator.geolocation.getCurrentPosition(success, error)
   }
 
+  const opacity = store.getState().dashboard.backgroundColorOpacity
+  const [dashboardBackgroundColorOpacity, setDashboardBackgroundColorOpacity] = React.useState(opacity)
+
+  const updateDashBoard = (event) => {
+    store.dispatch({
+      type: 'UPDATE_DASHBOARD',
+      data: {
+        backgroundColorOpacity: event.target.value,
+      },
+    })
+    setDashboardBackgroundColorOpacity(event.target.value)
+  }
+
   return (
     <div className="setting-bg">
       <div className="setting">
@@ -112,10 +125,26 @@ const Setting = () => {
               <button onClick={manualUpdateLocation}>更新位置</button>
             </div>
           </li>
-          <li className="now-location">
-            <div className="item">現在位置</div>
+          <li className="auto">
+            <div className="item">自動選擇</div>
             <div className="content">
               <button onClick={autoUpdateLocation}>自動取得位置</button>
+            </div>
+          </li>
+        </ul>
+        <span className="setting-divider"></span>
+        <ul>
+          <li>
+            <div className="item">透明度</div>
+            <div className="content">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={dashboardBackgroundColorOpacity}
+                onChange={updateDashBoard}
+              />
+              {opacity}
             </div>
           </li>
         </ul>
