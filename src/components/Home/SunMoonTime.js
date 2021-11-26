@@ -87,7 +87,7 @@ const translateHandler = (nowTime, riseYesterday, setYesterday, riseToday, setTo
     } else if (nowTime === setToday) {
       angle = 180
     } else {
-      if (nowTimeTotalMin < setToday) {
+      if (nowTimeTotalMin < setTotalMin) {
         // position-C-1
         console.log('position-C-1')
         angle = nowAngle(surplusRiseYesterdayTotalMin + setTotalMin, surplusRiseYesterdayTotalMin + nowTimeTotalMin)
