@@ -142,8 +142,11 @@ const SunMoonTime = ({ time, hour, location }) => {
   const [moonTrans, setMoonTrans] = React.useState('translate(0 0)')
 
   React.useEffect(() => {
-    const sunTimeList = getSunMoonData('sun', location.searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD'))
-      .parameter
+    const sunTimeList = getSunMoonData(
+      'sun',
+      location.searchCity,
+      changeStandardTime(new Date(), 'YYYY-MM-DD')
+    ).parameter
     setSunrise(sunTimeList.find((i) => i.parameterName === '日出時刻').parameterValue)
     setSunset(sunTimeList.find((i) => i.parameterName === '日沒時刻').parameterValue)
     const sunTimeYesterdayList = getSunMoonData(
@@ -159,8 +162,11 @@ const SunMoonTime = ({ time, hour, location }) => {
     ).parameter
     setSunriseTomorrow(sunTimeTomorrowList.find((i) => i.parameterName === '日出時刻').parameterValue)
 
-    const moonTimeList = getSunMoonData('moon', location.searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD'))
-      .parameter
+    const moonTimeList = getSunMoonData(
+      'moon',
+      location.searchCity,
+      changeStandardTime(new Date(), 'YYYY-MM-DD')
+    ).parameter
     setMoonrise(moonTimeList.find((i) => i.parameterName === '月出時刻').parameterValue)
     setMoonset(moonTimeList.find((i) => i.parameterName === '月沒時刻').parameterValue)
     const moonTimeYesterdayList = getSunMoonData(
