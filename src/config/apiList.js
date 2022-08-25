@@ -35,3 +35,11 @@ export function wgs84ToCityDistrict(longitude, latitude) {
   // https://data.moi.gov.tw/MoiOD/Data/DataDetail.aspx?oid=CA6D10B1-C474-41DB-8B53-28E7E4E18977
   return axios.get(`https://api.nlsc.gov.tw/other/TownVillagePointQuery/${longitude}/${latitude}/4326`)
 }
+
+/**
+ * 潮汐預報-未來 1 個月潮汐預報
+ * @param  {String} locationName 地點 https://opendata.cwb.gov.tw/opendatadoc/MMC/A0021-001.pdf
+ */
+export function tidal1Month({ locationName }) {
+  return axios.get('/v1/rest/datastore/F-A0021-001', { baseURL: weatheBaseURL, params: { locationName } })
+}
