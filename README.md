@@ -17,6 +17,7 @@
 
 1. [檔案](https://github.com/zora2002/How-is-the-weather/blob/master/.env_example) `.env_example` 改成 `.env`
 2. 在 `REACT_APP_API_TOKEN=` 貼上自己的授權碼
+3. `npm install` (Node version: 12.19.0)
 3. 終端機執行 `npm run start`
 
 ## 注意事項
