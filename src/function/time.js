@@ -114,6 +114,7 @@ export function getSunMoonData(time, city, date) {
   list = list[cityIndex].time
   const dateIndex = list.findIndex((i) => i.dataTime === date)
   const data = list[dateIndex]
+  console.log(data)
   return data
 }
 
