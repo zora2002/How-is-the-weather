@@ -1,10 +1,13 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './App.scss'
+
 import SideBar from './components/SideBar'
 import Wallpaper from './components/Wallpaper'
 import Home from './page/Home'
 import Setting from './page/Setting'
+import Tidal from './page/Tidal'
+
 import { connect } from 'react-redux'
 
 const App = ({ location }) => {
@@ -30,6 +33,9 @@ const App = ({ location }) => {
           </Route>
           <Route exact path="/setting">
             <Setting />
+          </Route>
+          <Route exact path="/tidal">
+            <Tidal />
           </Route>
         </Switch>
       </div>

@@ -1,8 +1,10 @@
 import React from 'react'
+import dayjs from 'dayjs'
 import '../../style/Home/SunMoonTime.scss'
-import { getSunMoonData, changeStandardTime, timeToMinutes } from '../../function/time'
+import { getSunMoonData, timeToMinutes } from '../../function/time'
 import store from '../../store'
 import DashboardDiv from '../../style/Home/DashboardDiv'
+import { sunriceSunsetTime, moonriceMoonsetTime } from '../../config/apiList'
 
 const center = { x: 250, y: 250 }
 const sunR = 200
@@ -52,17 +54,14 @@ const translateHandler = (nowTime, riseYesterday, setYesterday, riseToday, setTo
       angle = 180
     } else {
       if (nowTimeTotalMin < riseTotalMin) {
-        // position-A-1
-        console.log('position-A-1')
+        // console.log('position-A-1')
         angle =
           180 + nowAngle(surplusSetYesterdayTotalMin + riseTotalMin, surplusSetYesterdayTotalMin + nowTimeTotalMin)
       } else if (riseTotalMin < nowTimeTotalMin && nowTimeTotalMin < setTotalMin) {
-        // position-A-2
-        console.log('position-A-2')
+        // console.log('position-A-2')
         angle = nowAngle(setTotalMin - riseTotalMin, nowTimeTotalMin - riseTotalMin)
       } else {
-        // position-A-3
-        console.log('position-A-3')
+        // console.log('position-A-3')
         angle = 180 + nowAngle(surplusSetTotalMin + riseTomorrowTotalMin, nowTimeTotalMin - setTotalMin)
       }
     }
@@ -71,13 +70,11 @@ const translateHandler = (nowTime, riseYesterday, setYesterday, riseToday, setTo
       angle = 0
     } else {
       if (nowTimeTotalMin < riseTotalMin) {
-        // position-B-1
-        console.log('position-B-1')
+        // console.log('position-B-1')
         angle =
           180 + nowAngle(surplusSetYesterdayTotalMin + riseTotalMin, surplusSetYesterdayTotalMin + nowTimeTotalMin)
       } else {
-        // position-B-2
-        console.log('position-B-2')
+        // console.log('position-B-2')
         angle = nowAngle(surplusRiseTotalMin + setTomorrowTotalMin, nowTimeTotalMin - riseTotalMin)
       }
     }
@@ -88,16 +85,13 @@ const translateHandler = (nowTime, riseYesterday, setYesterday, riseToday, setTo
       angle = 180
     } else {
       if (nowTimeTotalMin < setTotalMin) {
-        // position-C-1
-        console.log('position-C-1')
+        // console.log('position-C-1')
         angle = nowAngle(surplusRiseYesterdayTotalMin + setTotalMin, surplusRiseYesterdayTotalMin + nowTimeTotalMin)
       } else if (setTotalMin < nowTimeTotalMin && nowTimeTotalMin < riseTotalMin) {
-        // position-C-2
-        console.log('position-C-2')
+        // console.log('position-C-2')
         angle = 180 + nowAngle(riseTotalMin - setTotalMin, nowTimeTotalMin - setTotalMin)
       } else {
-        // position-C-3
-        console.log('position-C-3')
+        // console.log('position-C-3')
         angle = nowAngle(surplusRiseTotalMin + setTomorrowTotalMin, nowTimeTotalMin - riseTotalMin)
       }
     }
@@ -106,12 +100,10 @@ const translateHandler = (nowTime, riseYesterday, setYesterday, riseToday, setTo
       angle = 180
     } else {
       if (nowTimeTotalMin < setTotalMin) {
-        // position-D-1
-        console.log('position-D-1')
+        // console.log('position-D-1')
         angle = nowAngle(surplusRiseYesterdayTotalMin + setTotalMin, surplusRiseYesterdayTotalMin + nowTimeTotalMin)
       } else {
-        // position-D-2
-        console.log('position-D-2')
+        // console.log('position-D-2')
         angle = 180 + nowAngle(surplusSetTotalMin + riseTomorrowTotalMin, nowTimeTotalMin - setTotalMin)
       }
     }
@@ -124,7 +116,7 @@ const translateHandler = (nowTime, riseYesterday, setYesterday, riseToday, setTo
 }
 
 const SunMoonTime = ({ time, hour, location }) => {
-  const nowTime = changeStandardTime(time, 'hh:mm')
+  const nowTime = dayjs().format('HH:mm')
   const nowHour = hour
 
   const [sunsetYesterday, setSunsetYesterday] = React.useState('')
@@ -142,42 +134,30 @@ const SunMoonTime = ({ time, hour, location }) => {
   const [moonTrans, setMoonTrans] = React.useState('translate(0 0)')
 
   React.useEffect(() => {
-    const sunTimeList = getSunMoonData('sun', location.searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD'))
-      .parameter
-    setSunrise(sunTimeList.find((i) => i.parameterName === '日出時刻').parameterValue)
-    setSunset(sunTimeList.find((i) => i.parameterName === '日沒時刻').parameterValue)
-    const sunTimeYesterdayList = getSunMoonData(
-      'sun',
-      location.searchCity,
-      changeStandardTime(new Date(), 'YYYY-MM-DD-1')
-    ).parameter
-    setSunsetYesterday(sunTimeYesterdayList.find((i) => i.parameterName === '日沒時刻').parameterValue)
-    const sunTimeTomorrowList = getSunMoonData(
-      'sun',
-      location.searchCity,
-      changeStandardTime(new Date(), 'YYYY-MM-DD+1')
-    ).parameter
-    setSunriseTomorrow(sunTimeTomorrowList.find((i) => i.parameterName === '日出時刻').parameterValue)
+    const init = async () => {
+      const sun = await sunriceSunsetTime({ locationName: location.searchCity })
+      const moon = await moonriceMoonsetTime({ locationName: location.searchCity })
+      console.log(sun, moon)
 
-    const moonTimeList = getSunMoonData('moon', location.searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD'))
-      .parameter
-    setMoonrise(moonTimeList.find((i) => i.parameterName === '月出時刻').parameterValue)
-    setMoonset(moonTimeList.find((i) => i.parameterName === '月沒時刻').parameterValue)
-    const moonTimeYesterdayList = getSunMoonData(
-      'moon',
-      location.searchCity,
-      changeStandardTime(new Date(), 'YYYY-MM-DD-1')
-    ).parameter
-    setMoonriseYesterday(moonTimeYesterdayList.find((i) => i.parameterName === '月出時刻').parameterValue)
-    setMoonsetYesterday(moonTimeYesterdayList.find((i) => i.parameterName === '月沒時刻').parameterValue)
-    const moonTimeTomorrowList = getSunMoonData(
-      'moon',
-      location.searchCity,
-      changeStandardTime(new Date(), 'YYYY-MM-DD+1')
-    ).parameter
-    setMoonriseTomorrow(moonTimeTomorrowList.find((i) => i.parameterName === '月出時刻').parameterValue)
-    setMoonsetTomorrow(moonTimeTomorrowList.find((i) => i.parameterName === '月沒時刻').parameterValue)
+      const sunTimeList = getSunMoonData(sun, dayjs().format('YYYY-MM-DD'))
+      setSunrise(sunTimeList.SunRiseTime)
+      setSunset(sunTimeList.SunSetTime)
+      const sunTimeYesterdayList = getSunMoonData(sun, dayjs().subtract(1, 'day').format('YYYY-MM-DD'))
+      setSunsetYesterday(sunTimeYesterdayList.SunSetTime)
+      const sunTimeTomorrowList = getSunMoonData(sun, dayjs().add(1, 'day').format('YYYY-MM-DD'))
+      setSunriseTomorrow(sunTimeTomorrowList.SunRiseTime)
 
+      const moonTimeList = getSunMoonData(moon, dayjs().format('YYYY-MM-DD'))
+      setMoonrise(moonTimeList.MoonRiseTime)
+      setMoonset(moonTimeList.MoonSetTime)
+      const moonTimeYesterdayList = getSunMoonData(moon, dayjs().subtract(1, 'day').format('YYYY-MM-DD'))
+      setMoonriseYesterday(moonTimeYesterdayList.MoonRiseTime)
+      setMoonsetYesterday(moonTimeYesterdayList.MoonSetTime)
+      const moonTimeTomorrowList = getSunMoonData(moon, dayjs().add(1, 'day').format('YYYY-MM-DD'))
+      setMoonriseTomorrow(moonTimeTomorrowList.MoonRiseTime)
+      setMoonsetTomorrow(moonTimeTomorrowList.MoonSetTime)
+    }
+    init()
     return () => {}
   }, [location.searchCity, nowHour])
 

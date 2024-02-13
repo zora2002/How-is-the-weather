@@ -16,6 +16,11 @@ const SideBar = () => {
             <img src={require('../img/setting.svg')} alt="設定" />
           </Link>
         </li>
+        <li>
+          <Link to="/tidal">
+            <img src={require('../img/tidal.svg')} alt="潮汐" />
+          </Link>
+        </li>
       </ul>
     </div>
   )

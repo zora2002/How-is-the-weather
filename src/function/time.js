@@ -1,48 +1,4 @@
-import monthInEnglish from '../config/monthInEnglish'
-import sun from '../doc/sun.json'
-import moon from '../doc/moon.json'
-/**
- * standardToYMDhm 標準時間轉換
- * @param  {String} time
- * @param  {String} type
- */
-export function changeStandardTime(time, type) {
-  if (type === 'YYYY-MM-DD+1') {
-    time = new Date(time.getTime() + 24 * 60 * 60 * 1000)
-  } else if (type === 'YYYY-MM-DD-1') {
-    time = new Date(time.getTime() - 24 * 60 * 60 * 1000)
-  } else {
-    // time = time
-  }
-  let YYYY = time.getFullYear() // 年
-  let MM = time.getMonth() + 1 // 月
-  MM = MM < 10 ? '0' + MM : MM
-  let DD = time.getDate()
-  DD = DD < 10 ? '0' + DD : DD
-  let hh = time.getHours()
-  hh = hh < 10 ? '0' + hh : hh
-  let mm = time.getMinutes()
-  mm = mm < 10 ? '0' + mm : mm
-  let ss = time.getSeconds()
-  ss = ss < 10 ? '0' + ss : ss
-  let result = ''
-  if (type === 'hh:mm') {
-    result = `${hh}:${mm}`
-  } else if (type === 'hh') {
-    result = hh
-  } else if (type === 'MM/DD hh:mm') {
-    result = `${MM}/${DD} ${hh}:${mm}`
-  } else if (type === 'MonthEnglish/DD hh:mm') {
-    result = `${monthInEnglish[MM]} ${DD} ${hh}:${mm}`
-  } else if (type === 'YYYY-MM-DD' || type === 'YYYY-MM-DD+1' || type === 'YYYY-MM-DD-1') {
-    result = `${YYYY}-${MM}-${DD}`
-  } else if (type === 'YYYY-MM-DD hh:mm:ss') {
-    result = `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`
-  } else {
-    result = 'type參數錯誤'
-  }
-  return result
-}
+import dayjs from 'dayjs'
 
 /**
  * minutesGap 同一天兩個時間的分鐘差(00:00~23:59)
@@ -103,38 +59,34 @@ export function splitTime(time) {
 
 /**
  * getSunMoonData 取得某天的日月出沒時間
- * @param  {String} time hh:mm
- * @param  {String} city 台灣縣市
+ * @param  {} apiData
  * @param  {String} date YYYY-MM-DD
  */
-export function getSunMoonData(time, city, date) {
-  time = time === 'sun' ? sun : moon
-  let list = time.cwbopendata.dataset.locations.location
-  const cityIndex = list.findIndex((i) => i.locationName === city)
-  list = list[cityIndex].time
-  const dateIndex = list.findIndex((i) => i.dataTime === date)
+export function getSunMoonData(apiData, date) {
+  let list = apiData.data.records.locations.location[0].time
+  const dateIndex = list.findIndex((i) => i.Date === date)
   const data = list[dateIndex]
   return data
 }
 
 /**
  * getTimePeriod 取得今日個時段列表
- * @param  {String} city 縣市
+ * @param  {} apiData
  * @param  {String} time 現在幾點幾分hh:mm
  */
-export function getTimePeriod(city, time) {
-  const data = getSunMoonData('sun', city, changeStandardTime(new Date(), 'YYYY-MM-DD'))
+export function getTimePeriod(apiData, time) {
+  const data = getSunMoonData(apiData, dayjs().format('YYYY-MM-DD'))
   const splitDayTwilight = {
-    start: splitTime(data.parameter[0].parameterValue),
-    end: splitTime(data.parameter[1].parameterValue),
+    start: splitTime(data.BeginCivilTwilightTime),
+    end: splitTime(data.SunRiseTime),
   }
   const dayTwilight = {
     start: splitDayTwilight.start.hh * 60 + splitDayTwilight.start.mm,
     end: splitDayTwilight.end.hh * 60 + splitDayTwilight.end.mm,
   }
   const splitNightTwilight = {
-    start: splitTime(data.parameter[5].parameterValue),
-    end: splitTime(data.parameter[7].parameterValue),
+    start: splitTime(data.SunSetTime),
+    end: splitTime(data.EndCivilTwilightTime),
   }
   const nightTwilight = {
     start: splitNightTwilight.start.hh * 60 + splitNightTwilight.start.mm,

@@ -1,22 +1,22 @@
 import React from 'react'
+import dayjs from 'dayjs'
 import '../style/Home/Home.scss'
 import '../style/Home/NowInfo.scss'
 import TwentyFourHours from '../components/Home/TwentyFourHours'
 import NowInfo from '../components/Home/NowInfo'
 import WeekInfo from '../components/Home/WeekInfo'
 import SunMoonTime from '../components/Home/SunMoonTime'
-import { changeStandardTime } from '../function/time'
 import { city2Day1WeekForecast, country36HoursForecast } from '../config/apiList'
 
 const Home = ({ time, location }) => {
-  const [hour, setHour] = React.useState(changeStandardTime(new Date(), 'hh'))
+  const [hour, setHour] = React.useState(dayjs().format('HH'))
   const [apiCity2DayForecast, setApiCity2DayForecast] = React.useState(null)
   const [apiCity1WeekForecast, setApiCity1WeekForecast] = React.useState(null)
   const [apiCountry36HoursForecast, setApiCountry36HoursForecast] = React.useState(null)
 
   React.useEffect(() => {
     const getHour = () => {
-      setHour(changeStandardTime(new Date(), 'hh'))
+      setHour(dayjs().format('HH'))
     }
     getHour()
 
