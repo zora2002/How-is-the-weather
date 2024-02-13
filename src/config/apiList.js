@@ -1,4 +1,5 @@
 import axios from 'axios'
+import dayjs from 'dayjs'
 import cityDistricts from './cityDistricts'
 
 /**
@@ -65,6 +66,36 @@ export function tidal1Month({ locationName }) {
       url: 'F-A0021-001',
       location: locationName,
       sort: 'Date,DateTime',
+    },
+  })
+}
+
+export function sunriceSunsetTime({ locationName }) {
+  return axios({
+    method: 'POST',
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+    url: '/weather',
+    data: {
+      url: 'A-B0062-001',
+      location: locationName,
+      sort: 'Date',
+      timeFrom: dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
+      timeTo: dayjs().add(2, 'day').format('YYYY-MM-DD'),
+    },
+  })
+}
+
+export function moonriceMoonsetTime({ locationName }) {
+  return axios({
+    method: 'POST',
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+    url: '/weather',
+    data: {
+      url: 'A-B0063-001',
+      location: locationName,
+      sort: 'Date',
+      timeFrom: dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
+      timeTo: dayjs().add(2, 'day').format('YYYY-MM-DD'),
     },
   })
 }

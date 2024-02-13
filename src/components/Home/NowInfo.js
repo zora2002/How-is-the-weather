@@ -1,5 +1,6 @@
 import React from 'react'
-import { changeStandardTime, isApi3hrFirstArrayHour } from '../../function/time'
+import dayjs from 'dayjs'
+import { isApi3hrFirstArrayHour } from '../../function/time'
 import DashboardDiv from '../../style/Home/DashboardDiv'
 import store from '../../store'
 
@@ -11,7 +12,7 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
   const [icon, setIcon] = React.useState(1)
 
   const checkIconTimeType = () => {
-    const hour = parseInt(changeStandardTime(time, 'hh'))
+    const hour = parseInt(dayjs().format('HH'))
     return hour > 5 && hour < 18 ? 'day' : 'night'
   }
 
@@ -55,7 +56,7 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
         <div className="describe">{describe}</div>
         <div className="rain">{rain}%</div>
       </div>
-      <div className="time">{changeStandardTime(time, 'MonthEnglish/DD hh:mm')}</div>
+      <div className="time">{dayjs().format('MMM DD HH:mm')}</div>
     </DashboardDiv>
   )
 }
