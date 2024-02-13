@@ -13,10 +13,11 @@
     * 時段的時間點設定，會依據日出日沒時間調整。冬至、夏至都可在對的日沒時間，看到對的日落背景
 
 ## 使用
-> 需先上 [中央氣象局 氣象資料開放平台](https://opendata.cwb.gov.tw/index) 取得**會員授權碼**，可參考該網站的 [常見問答 Q3](https://opendata.cwb.gov.tw/faq)
+> 需先上 [中央氣象局 氣象資料開放平台](https://opendata.cwa.gov.tw/index) 取得**會員授權碼**，可參考該網站的 [常見問答 Q3](https://opendata.cwa.gov.tw/faq)
 
 1. [檔案](https://github.com/zora2002/How-is-the-weather/blob/master/.env_example) `.env_example` 改成 `.env`
 2. 在 `REACT_APP_API_TOKEN=` 貼上自己的授權碼
+3. `npm install` (Node version: 12.19.0)
 3. 終端機執行 `npm run start`
 
 ## 注意事項
