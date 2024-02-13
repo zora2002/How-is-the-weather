@@ -109,10 +109,10 @@ export function splitTime(time) {
  */
 export function getSunMoonData(time, city, date) {
   time = time === 'sun' ? sun : moon
-  let list = time.cwbopendata.dataset.locations.location
-  const cityIndex = list.findIndex((i) => i.locationName === city)
+  let list = time.cwaopendata.dataset.location
+  const cityIndex = list.findIndex((i) => i.CountyName === city)
   list = list[cityIndex].time
-  const dateIndex = list.findIndex((i) => i.dataTime === date)
+  const dateIndex = list.findIndex((i) => i.Date === date)
   const data = list[dateIndex]
   console.log(data)
   return data
@@ -126,16 +126,16 @@ export function getSunMoonData(time, city, date) {
 export function getTimePeriod(city, time) {
   const data = getSunMoonData('sun', city, changeStandardTime(new Date(), 'YYYY-MM-DD'))
   const splitDayTwilight = {
-    start: splitTime(data.parameter[0].parameterValue),
-    end: splitTime(data.parameter[1].parameterValue),
+    start: splitTime(data.BeginCivilTwilightTime),
+    end: splitTime(data.SunRiseTime),
   }
   const dayTwilight = {
     start: splitDayTwilight.start.hh * 60 + splitDayTwilight.start.mm,
     end: splitDayTwilight.end.hh * 60 + splitDayTwilight.end.mm,
   }
   const splitNightTwilight = {
-    start: splitTime(data.parameter[5].parameterValue),
-    end: splitTime(data.parameter[7].parameterValue),
+    start: splitTime(data.SunSetTime),
+    end: splitTime(data.EndCivilTwilightTime),
   }
   const nightTwilight = {
     start: splitNightTwilight.start.hh * 60 + splitNightTwilight.start.mm,

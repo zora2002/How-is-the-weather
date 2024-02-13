@@ -142,47 +142,39 @@ const SunMoonTime = ({ time, hour, location }) => {
   const [moonTrans, setMoonTrans] = React.useState('translate(0 0)')
 
   React.useEffect(() => {
-    const sunTimeList = getSunMoonData(
-      'sun',
-      location.searchCity,
-      changeStandardTime(new Date(), 'YYYY-MM-DD')
-    ).parameter
-    setSunrise(sunTimeList.find((i) => i.parameterName === '日出時刻').parameterValue)
-    setSunset(sunTimeList.find((i) => i.parameterName === '日沒時刻').parameterValue)
+    const sunTimeList = getSunMoonData('sun', location.searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD'))
+    setSunrise(sunTimeList.SunRiseTime)
+    setSunset(sunTimeList.SunSetTime)
     const sunTimeYesterdayList = getSunMoonData(
       'sun',
       location.searchCity,
       changeStandardTime(new Date(), 'YYYY-MM-DD-1')
-    ).parameter
-    setSunsetYesterday(sunTimeYesterdayList.find((i) => i.parameterName === '日沒時刻').parameterValue)
+    )
+    setSunsetYesterday(sunTimeYesterdayList.SunSetTime)
     const sunTimeTomorrowList = getSunMoonData(
       'sun',
       location.searchCity,
       changeStandardTime(new Date(), 'YYYY-MM-DD+1')
-    ).parameter
-    setSunriseTomorrow(sunTimeTomorrowList.find((i) => i.parameterName === '日出時刻').parameterValue)
+    )
+    setSunriseTomorrow(sunTimeTomorrowList.SunRiseTime)
 
-    const moonTimeList = getSunMoonData(
-      'moon',
-      location.searchCity,
-      changeStandardTime(new Date(), 'YYYY-MM-DD')
-    ).parameter
-    setMoonrise(moonTimeList.find((i) => i.parameterName === '月出時刻').parameterValue)
-    setMoonset(moonTimeList.find((i) => i.parameterName === '月沒時刻').parameterValue)
+    const moonTimeList = getSunMoonData('moon', location.searchCity, changeStandardTime(new Date(), 'YYYY-MM-DD'))
+    setMoonrise(moonTimeList.MoonRiseTime)
+    setMoonset(moonTimeList.MoonSetTime)
     const moonTimeYesterdayList = getSunMoonData(
       'moon',
       location.searchCity,
       changeStandardTime(new Date(), 'YYYY-MM-DD-1')
-    ).parameter
-    setMoonriseYesterday(moonTimeYesterdayList.find((i) => i.parameterName === '月出時刻').parameterValue)
-    setMoonsetYesterday(moonTimeYesterdayList.find((i) => i.parameterName === '月沒時刻').parameterValue)
+    )
+    setMoonriseYesterday(moonTimeYesterdayList.MoonRiseTime)
+    setMoonsetYesterday(moonTimeYesterdayList.MoonSetTime)
     const moonTimeTomorrowList = getSunMoonData(
       'moon',
       location.searchCity,
       changeStandardTime(new Date(), 'YYYY-MM-DD+1')
-    ).parameter
-    setMoonriseTomorrow(moonTimeTomorrowList.find((i) => i.parameterName === '月出時刻').parameterValue)
-    setMoonsetTomorrow(moonTimeTomorrowList.find((i) => i.parameterName === '月沒時刻').parameterValue)
+    )
+    setMoonriseTomorrow(moonTimeTomorrowList.MoonRiseTime)
+    setMoonsetTomorrow(moonTimeTomorrowList.MoonSetTime)
 
     return () => {}
   }, [location.searchCity, nowHour])

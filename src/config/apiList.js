@@ -1,12 +1,20 @@
-import axios from './setAxios'
+import axios from 'axios'
 import cityDistricts from './cityDistricts'
-const weatheBaseURL = 'https://opendata.cwb.gov.tw/api'
+
 /**
  * 一般天氣預報-今明 36 小時天氣預報
- * @param  {String} params 搜尋縣市或區域
+ * @param  {String} locationName 搜尋縣市或區域
  */
-export function country36HoursForecast(params) {
-  return axios.get('/v1/rest/datastore/F-C0032-001', { baseURL: weatheBaseURL, params: params })
+export function country36HoursForecast({ locationName }) {
+  return axios({
+    method: 'POST',
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+    url: '/weather',
+    data: {
+      url: 'F-C0032-001',
+      location: locationName,
+    },
+  })
 }
 /**
  * 鄉鎮天氣預報-縣市未來2天/1週天氣預報
@@ -23,7 +31,15 @@ export function city2Day1WeekForecast(params, city, day) {
   } else {
     console.log('查無此縣市： ' + city)
   }
-  return axios.get('/v1/rest/datastore/F-D0047-' + code, { baseURL: weatheBaseURL, params: params })
+  return axios({
+    method: 'POST',
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+    url: '/weather',
+    data: {
+      url: 'F-D0047-' + code,
+      location: params.locationName,
+    },
+  })
 }
 
 /**
@@ -38,8 +54,16 @@ export function wgs84ToCityDistrict(longitude, latitude) {
 
 /**
  * 潮汐預報-未來 1 個月潮汐預報
- * @param  {String} locationName 地點 https://opendata.cwb.gov.tw/opendatadoc/MMC/A0021-001.pdf
+ * @param  {String} locationName 地點 https://opendata.cwa.gov.tw/opendatadoc/MMC/A0021-001.pdf
  */
 export function tidal1Month({ locationName }) {
-  return axios.get('/v1/rest/datastore/F-A0021-001', { baseURL: weatheBaseURL, params: { locationName } })
+  return axios({
+    method: 'POST',
+    baseURL: process.env.REACT_APP_API_BASE_URL,
+    url: '/weather',
+    data: {
+      url: 'F-A0021-001',
+      location: locationName,
+    },
+  })
 }

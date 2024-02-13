@@ -85,14 +85,14 @@ const CHRAT_DATA_DAFAULT = {
 }
 
 const sortByDate = (data) => {
-  data.validTime.forEach((i) => {
-    i['startTimeInDateType'] = new Date(i.startTime)
-    i.weatherElement[2].time.forEach((item) => {
-      item['timeInDateType'] = new Date(item.dataTime)
+  data.forEach((i) => {
+    i['startTimeInDateType'] = new Date(i.Date)
+    i.Time.forEach((item) => {
+      item['timeInDateType'] = new Date(item.DateTime)
     })
-    i.weatherElement[2].time.sort((a, b) => a.timeInDateType - b.timeInDateType)
+    i.Time.sort((a, b) => a.timeInDateType - b.timeInDateType)
   })
-  data.validTime.sort((a, b) => a.startTimeInDateType - b.startTimeInDateType)
+  data.sort((a, b) => a.startTimeInDateType - b.startTimeInDateType)
 
   return data
 }
@@ -103,16 +103,15 @@ const getData = async () => {
 }
 
 const chartDataHandler = ({ sortData, showDay = SHOW_DAY_DAFAULT }) => {
-  if (!sortData.validTime) return CHRAT_DATA_DAFAULT
+  if (!sortData) return CHRAT_DATA_DAFAULT
 
   let list = []
-  sortData.validTime.forEach((i, index) => {
+  sortData.forEach((i, index) => {
     if (index > showDay) return
-    i.weatherElement[2].time.forEach((item) => {
+    i.Time.forEach((item) => {
       const info = {
-        x: new Date(item.dataTime),
-        // parameter[2] 潮高(當地)
-        y: parseInt(item.parameter[2].parameterValue, 10),
+        x: new Date(item.DateTime),
+        y: parseInt(item.TideHeights.AboveLocalMSL, 10),
       }
       list.push(info)
     })
@@ -138,7 +137,7 @@ const Tidal = () => {
     const init = async () => {
       const apiResult = await getData()
       setApiData(apiResult)
-      const sortApiResult = sortByDate(apiResult.data.records.location[0])
+      const sortApiResult = sortByDate(apiResult.data.records.TideForecasts[0].Location.TimePeriods.Daily)
       setApiSortData(sortApiResult)
       const chartDataList = chartDataHandler({ sortData: sortApiResult })
       setChartData(chartDataList)
