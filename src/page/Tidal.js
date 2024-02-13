@@ -84,36 +84,21 @@ const CHRAT_DATA_DAFAULT = {
   ],
 }
 
-const sortByDate = (data) => {
-  data.forEach((i) => {
-    i['startTimeInDateType'] = new Date(i.Date)
-    i.Time.forEach((item) => {
-      item['timeInDateType'] = new Date(item.DateTime)
-    })
-    i.Time.sort((a, b) => a.timeInDateType - b.timeInDateType)
-  })
-  data.sort((a, b) => a.startTimeInDateType - b.startTimeInDateType)
-
-  return data
-}
-
 const getData = async () => {
   const res = await tidal1Month({ locationName: '屏東縣恆春鎮' })
   return res
 }
 
-const chartDataHandler = ({ sortData, showDay = SHOW_DAY_DAFAULT }) => {
-  if (!sortData) return CHRAT_DATA_DAFAULT
+const chartDataHandler = ({ data, showDay = SHOW_DAY_DAFAULT }) => {
+  if (!data) return CHRAT_DATA_DAFAULT
 
   let list = []
-  sortData.forEach((i, index) => {
-    if (index > showDay) return
+  data.slice(0, showDay + 1).forEach((i) => {
     i.Time.forEach((item) => {
-      const info = {
+      list.push({
         x: new Date(item.DateTime),
         y: parseInt(item.TideHeights.AboveLocalMSL, 10),
-      }
-      list.push(info)
+      })
     })
   })
 
@@ -129,35 +114,32 @@ const chartDataHandler = ({ sortData, showDay = SHOW_DAY_DAFAULT }) => {
 
 const Tidal = () => {
   const [tidalApiData, setApiData] = useState({})
-  const [tidalApiSortData, setApiSortData] = useState([])
   const [chartData, setChartData] = useState(CHRAT_DATA_DAFAULT)
   const [showDay, setShowDay] = useState(SHOW_DAY_DAFAULT)
 
+  const init = async () => {
+    const apiResult = await getData()
+    const list = apiResult.data.records.TideForecasts[0].Location.TimePeriods.Daily
+    setApiData(list)
+    const chartDataList = chartDataHandler({ data: list })
+    setChartData(chartDataList)
+  }
+
   useEffect(() => {
-    const init = async () => {
-      const apiResult = await getData()
-      setApiData(apiResult)
-      const sortApiResult = sortByDate(apiResult.data.records.TideForecasts[0].Location.TimePeriods.Daily)
-      setApiSortData(sortApiResult)
-      const chartDataList = chartDataHandler({ sortData: sortApiResult })
-      setChartData(chartDataList)
-    }
     init()
   }, [])
 
-  useEffect(() => {
-    const chartDataList = chartDataHandler({ sortData: tidalApiSortData, showDay: showDay })
-    setChartData(chartDataList)
-  }, [showDay, tidalApiSortData])
-
   const showDayHandler = (event) => {
-    setShowDay(parseInt(event.target.value), 10)
+    const newDay = parseInt(event.target.value, 10)
+    setShowDay(newDay)
+    const chartDataList = chartDataHandler({ data: tidalApiData, showDay: newDay })
+    setChartData(chartDataList)
   }
 
   return (
     <div className="tidal-bg">
       <div className="tidal-info">
-        <div className="left">地點：{tidalApiSortData.locationName}</div>
+        <div className="left">地點：{}</div>
         <select className="right" value={showDay} onChange={showDayHandler}>
           {SELECT_LIST.map((i) => {
             return (

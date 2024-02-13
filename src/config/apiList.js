@@ -64,6 +64,7 @@ export function tidal1Month({ locationName }) {
     data: {
       url: 'F-A0021-001',
       location: locationName,
+      sort: 'Date,DateTime',
     },
   })
 }
