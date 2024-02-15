@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import '../style/SideBar.scss'
 
 import HomeIcon from '../img/home.svg'
@@ -30,4 +30,13 @@ const SideBar = () => {
   )
 }
 
-export default SideBar
+const Layout = () => {
+  return (
+    <>
+      <SideBar />
+      <Outlet />
+    </>
+  )
+}
+
+export default Layout

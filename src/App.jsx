@@ -1,12 +1,6 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './App.scss'
-
-import SideBar from './components/SideBar'
-import Wallpaper from './components/Wallpaper'
-import Home from './page/Home'
-import Setting from './page/Setting'
-import Tidal from './page/Tidal'
+import AllRoutes from './routes'
 
 import { connect } from 'react-redux'
 
@@ -23,23 +17,9 @@ const App = ({ location }) => {
     }
   }, [time, location])
   return (
-    <Router>
-      <div className="App">
-        <SideBar />
-        <Switch>
-          <Route exact path="/">
-            <Wallpaper time={time} location={location} />
-            <Home time={time} location={location} />
-          </Route>
-          <Route exact path="/setting">
-            <Setting />
-          </Route>
-          <Route exact path="/tidal">
-            <Tidal />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+    <div className="App">
+      <AllRoutes time={time} location={location} />
+    </div>
   )
 }
 

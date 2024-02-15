@@ -91,16 +91,18 @@ function setting2SVG(tempList, xlineNum, xEveryWidth, yTotalHeight) {
   }
 }
 
-function DynamicIcon({dayNightTime, icon}) {
-  const [image, setImage] = React.useState(null);
+function DynamicIcon({ dayNightTime, icon }) {
+  const [image, setImage] = React.useState(null)
 
-  import(`../../img/icon/${dayNightTime}/${parseInt(icon[dayNightTime])}.svg`).then(image => {
-    setImage(image.default);
-  }).catch(error => {
-    console.error('Error loading image:', error);
-  });
+  import(`../../img/icon/${dayNightTime}/${parseInt(icon[dayNightTime])}.svg`)
+    .then((image) => {
+      setImage(image.default)
+    })
+    .catch((error) => {
+      console.error('Error loading image:', error)
+    })
 
-  return image ? <img src={image} alt="Dynamic Image" /> : <div>Loading...</div>;
+  return image ? <img src={image} alt="Dynamic Image" /> : <div>Loading...</div>
 }
 
 const WeekInfo = ({ apiCity1WeekForecast }) => {
@@ -184,7 +186,7 @@ const WeekInfo = ({ apiCity1WeekForecast }) => {
   const backgroundColorOpacity = store.getState().dashboard.backgroundColorOpacity
 
   return (
-    <DashboardDiv backgroundColorOpacity={backgroundColorOpacity} className="week-info">
+    <DashboardDiv $backgroundColorOpacity={backgroundColorOpacity} className="week-info">
       <ul className="up-list">
         {dateIconList.map((i, index) => (
           <li key={index}>

@@ -201,7 +201,7 @@ const SunMoonTime = ({ time, hour, location }) => {
   const backgroundColorOpacity = store.getState().dashboard.backgroundColorOpacity
 
   return (
-    <DashboardDiv backgroundColorOpacity={backgroundColorOpacity} className="sun-moon-time">
+    <DashboardDiv $backgroundColorOpacity={backgroundColorOpacity} className="sun-moon-time">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
         <g id="日月時間" transform="translate(0 0)">
           <g

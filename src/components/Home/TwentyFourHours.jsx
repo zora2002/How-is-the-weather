@@ -65,18 +65,19 @@ const checkIconTimeType = (time) => {
   return timeInNum > 5 && timeInNum < 18 ? 'day' : 'night'
 }
 
-function DynamicIcon({icon, time}) {
-  const [image, setImage] = React.useState(null);
+function DynamicIcon({ icon, time }) {
+  const [image, setImage] = React.useState(null)
 
-  import(`../../img/icon/${checkIconTimeType(time)}/${icon}.svg`).then(image => {
-    setImage(image.default);
-  }).catch(error => {
-    console.error('Error loading image:', error);
-  });
+  import(`../../img/icon/${checkIconTimeType(time)}/${icon}.svg`)
+    .then((image) => {
+      setImage(image.default)
+    })
+    .catch((error) => {
+      console.error('Error loading image:', error)
+    })
 
-  return image ? <img src={image} alt="Dynamic Image" /> : <></>;
+  return image ? <img src={image} alt="Dynamic Image" /> : <></>
 }
-
 
 const TwentyFourHours = ({ apiCity2DayForecast }) => {
   const city2Day1WeekForecast = apiCity2DayForecast
@@ -84,7 +85,6 @@ const TwentyFourHours = ({ apiCity2DayForecast }) => {
   const [rainList, setRainList] = React.useState([])
   const [svgInfoList, setSvgInfoList] = React.useState([])
   const [svgPathD, setSvgPathD] = React.useState('')
-
 
   React.useEffect(() => {
     const getTemperature = () => {
@@ -127,7 +127,7 @@ const TwentyFourHours = ({ apiCity2DayForecast }) => {
   const backgroundColorOpacity = store.getState().dashboard.backgroundColorOpacity
 
   return (
-    <DashboardDiv backgroundColorOpacity={backgroundColorOpacity} className="twenty-four-hours">
+    <DashboardDiv $backgroundColorOpacity={backgroundColorOpacity} className="twenty-four-hours">
       <ul className="up-list">
         {timeIconList.map((i, index) => (
           <li key={index}>
