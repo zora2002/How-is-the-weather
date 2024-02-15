@@ -4,6 +4,23 @@ import { isApi3hrFirstArrayHour } from '../../function/time'
 import DashboardDiv from '../../style/Home/DashboardDiv'
 import store from '../../store'
 
+const checkIconTimeType = () => {
+  const hour = parseInt(dayjs().format('HH'))
+  return hour > 5 && hour < 18 ? 'day' : 'night'
+}
+
+function DynamicIcon({icon}) {
+  const [image, setImage] = React.useState(null);
+
+  import(`../../img/icon/${checkIconTimeType()}/${icon}.svg`).then(image => {
+    setImage(image.default);
+  }).catch(error => {
+    console.error('Error loading image:', error);
+  });
+
+  return image ? <img src={image} alt="Dynamic Image" /> : <div>Loading...</div>;
+}
+
 const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
   const country36HoursForecast = apiCountry36HoursForecast
   const [temperature, setTemperature] = React.useState('')
@@ -11,10 +28,7 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
   const [describe, setDescribe] = React.useState('')
   const [icon, setIcon] = React.useState(1)
 
-  const checkIconTimeType = () => {
-    const hour = parseInt(dayjs().format('HH'))
-    return hour > 5 && hour < 18 ? 'day' : 'night'
-  }
+
 
   React.useEffect(() => {
     const getTemperatureRain = () => {
@@ -49,7 +63,7 @@ const NowInfo = ({ apiCity2DayForecast, apiCountry36HoursForecast, time }) => {
   return (
     <DashboardDiv backgroundColorOpacity={backgroundColorOpacity} className="now-info">
       <div className="icon">
-        <img src={require(`../../img/icon/${checkIconTimeType()}/${icon}.svg`)} alt="" />
+        <DynamicIcon icon={icon} />
       </div>
       <div className="data">
         <div className="temperature">{temperature}℃</div>

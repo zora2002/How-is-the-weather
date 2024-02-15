@@ -1,9 +1,107 @@
 import React from 'react'
 import '../../style/Home/WeekInfo.scss'
-import { setting2SVG } from '../../function/svg'
 import { isApi12hrFirstArrayHour, removeArrayFirstItem } from '../../function/time'
 import store from '../../store'
 import DashboardDiv from '../../style/Home/DashboardDiv'
+
+function setting2SVG(tempList, xlineNum, xEveryWidth, yTotalHeight) {
+  const originTempList = { ...tempList }
+  let mixlist = tempList.day.concat(tempList.night)
+
+  // X軸間距
+  let xline = []
+  for (let i = 0; i < xlineNum; i++) {
+    xline.push(i * xEveryWidth)
+  }
+  // console.log(xline)
+
+  // 氣溫列表字串轉數字，並取得各值與最大值的差
+  mixlist = mixlist.map((i) => parseInt(i))
+
+  tempList.day = tempList.day.map((i) => Math.abs(i - Math.max(...mixlist)))
+  tempList.night = tempList.night.map((i) => Math.abs(i - Math.max(...mixlist)))
+
+  mixlist = mixlist.map((i) => Math.abs(i - Math.max(...mixlist)))
+  // console.log(mixlist)
+
+  // 取得最大的差
+  const diffTemp = Math.max(...mixlist) - Math.min(...mixlist)
+  // console.log(diffTemp)
+
+  // 最大的差:yTotalHeight(svg高度) => 比例套在各值，得出每個氣溫的svg高度
+  tempList.day = tempList.day.map((i) => i * Math.round(yTotalHeight / diffTemp))
+  tempList.night = tempList.night.map((i) => i * Math.round(yTotalHeight / diffTemp))
+
+  let svgInfoListValue = {
+    text: [],
+    circle: [],
+  }
+  let svgPathDValue = {
+    day: [],
+    night: [],
+  }
+
+  for (let i = 0; i < xline.length; i++) {
+    // day
+    svgInfoListValue.text.push(
+      <text
+        key={`text-day-${xline[i]}-${i}`}
+        x={xline[i] + 10 + 10}
+        y={tempList.day[i] - 10 + 10}
+        fontSize="13"
+        textAnchor="end"
+        fill="#000000"
+      >
+        {originTempList.day[i]}
+      </text>
+    )
+    svgInfoListValue.circle.push(
+      <circle key={`circle-day-${xline[i]}-${i}`} cx={xline[i] + 10} cy={tempList.day[i] + 10} r="3" fill="#000000" />
+    )
+    svgPathDValue.day += `${xline[i]},${tempList.day[i] + 10},`
+
+    // night
+    svgInfoListValue.text.push(
+      <text
+        key={`text-night-${xline[i]}-${i}`}
+        x={xline[i] + 10 + 10}
+        y={tempList.night[i] - 10 + 10}
+        fontSize="13"
+        textAnchor="end"
+        fill="#000000"
+      >
+        {originTempList.night[i]}
+      </text>
+    )
+    svgInfoListValue.circle.push(
+      <circle
+        key={`circle-night-${xline[i]}-${i}`}
+        cx={xline[i] + 10}
+        cy={tempList.night[i] + 10}
+        r="3"
+        fill="#000000"
+      />
+    )
+    svgPathDValue.night += `${xline[i]},${tempList.night[i] + 10},`
+  }
+
+  return {
+    svgInfoListValue: svgInfoListValue,
+    svgPathDValue: svgPathDValue,
+  }
+}
+
+function DynamicIcon({dayNightTime, icon}) {
+  const [image, setImage] = React.useState(null);
+
+  import(`../../img/icon/${dayNightTime}/${parseInt(icon[dayNightTime])}.svg`).then(image => {
+    setImage(image.default);
+  }).catch(error => {
+    console.error('Error loading image:', error);
+  });
+
+  return image ? <img src={image} alt="Dynamic Image" /> : <div>Loading...</div>;
+}
 
 const WeekInfo = ({ apiCity1WeekForecast }) => {
   const [dateIconList, setdateIconList] = React.useState([])
@@ -91,7 +189,7 @@ const WeekInfo = ({ apiCity1WeekForecast }) => {
         {dateIconList.map((i, index) => (
           <li key={index}>
             <div>{i.date}</div>
-            <img src={require(`../../img/icon/${dayNightTime}/${parseInt(i.icon[dayNightTime])}.svg`)} alt="" />
+            <DynamicIcon dayNightTime={dayNightTime} icon={i.icon} />
           </li>
         ))}
       </ul>

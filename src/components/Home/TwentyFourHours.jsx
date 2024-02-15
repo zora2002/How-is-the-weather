@@ -1,8 +1,82 @@
 import React from 'react'
 import '../../style/Home/TwentyFourHours.scss'
-import { settingSVG } from '../../function/svg'
+// import { settingSVG } from '../../function/svg'
 import store from '../../store'
 import DashboardDiv from '../../style/Home/DashboardDiv'
+
+export function settingSVG(tempList, xlineNum, xEveryWidth, yTotalHeight) {
+  const originTempList = [...tempList]
+  // X軸間距
+  let xline = []
+  for (let i = 0; i < xlineNum; i++) {
+    xline.push(i * xEveryWidth)
+  }
+  // console.log(xline)
+
+  // 氣溫列表字串轉數字，並取得各值與最大值的差
+  tempList = tempList.map((i) => parseInt(i))
+  tempList = tempList.map((i) => Math.abs(i - Math.max(...tempList)))
+  // console.log(tempList)
+
+  // 取得最大的差
+  const diffTemp = Math.max(...tempList) - Math.min(...tempList)
+  // console.log(diffTemp)
+
+  // 最大的差:yTotalHeight(svg高度) => 比例套在各值，得出每個氣溫的svg高度
+  tempList = tempList.map((i) => i * Math.round(yTotalHeight / diffTemp))
+  // console.log(tempList)
+
+  let svgInfoListValue = {
+    text: [],
+    circle: [],
+  }
+  let svgPathDValue = ''
+
+  for (let i = 0; i < xline.length; i++) {
+    svgInfoListValue.text.push(
+      <text
+        key={`text-${xline[i]}-${i}`}
+        x={xline[i] + 10 + 10}
+        y={tempList[i] - 10 + 30}
+        fontSize="14"
+        textAnchor="end"
+        fill="#000000"
+      >
+        {originTempList[i]}
+      </text>
+    )
+    svgInfoListValue.circle.push(
+      <circle key={`circle-${xline[i]}-${i}`} cx={xline[i] + 10} cy={tempList[i] + 30} r="3" fill="#000000" />
+    )
+    svgPathDValue += `${xline[i]},${tempList[i] + 30},`
+  }
+  // console.log(svgInfoListValue)
+
+  return {
+    svgInfoListValue: svgInfoListValue,
+    svgPathDValue: svgPathDValue,
+  }
+}
+
+const checkIconTimeType = (time) => {
+  const unit = time.slice(-1)
+  if (unit === '號') return 'night'
+  const timeInNum = parseInt(time.slice(0, 2))
+  return timeInNum > 5 && timeInNum < 18 ? 'day' : 'night'
+}
+
+function DynamicIcon({icon, time}) {
+  const [image, setImage] = React.useState(null);
+
+  import(`../../img/icon/${checkIconTimeType(time)}/${icon}.svg`).then(image => {
+    setImage(image.default);
+  }).catch(error => {
+    console.error('Error loading image:', error);
+  });
+
+  return image ? <img src={image} alt="Dynamic Image" /> : <></>;
+}
+
 
 const TwentyFourHours = ({ apiCity2DayForecast }) => {
   const city2Day1WeekForecast = apiCity2DayForecast
@@ -11,10 +85,6 @@ const TwentyFourHours = ({ apiCity2DayForecast }) => {
   const [svgInfoList, setSvgInfoList] = React.useState([])
   const [svgPathD, setSvgPathD] = React.useState('')
 
-  const checkIconTimeType = (time) => {
-    time = parseInt(time.slice(0, 2))
-    return time > 3 && time < 18 ? 'day' : 'night'
-  }
 
   React.useEffect(() => {
     const getTemperature = () => {
@@ -62,7 +132,7 @@ const TwentyFourHours = ({ apiCity2DayForecast }) => {
         {timeIconList.map((i, index) => (
           <li key={index}>
             <div>{i.time}</div>
-            <img src={require(`../../img/icon/${checkIconTimeType(i.time)}/${i.icon}.svg`)} alt="" />
+            <DynamicIcon icon={i.icon} time={i.time} />
           </li>
         ))}
       </ul>

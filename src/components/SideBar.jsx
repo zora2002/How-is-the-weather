@@ -2,23 +2,27 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import '../style/SideBar.scss'
 
+import HomeIcon from '../img/home.svg'
+import SettingIcon from '../img/setting.svg'
+import TidalIcon from '../img/tidal.svg'
+
 const SideBar = () => {
   return (
     <div className="side-bar">
       <ul>
         <li>
           <Link to="/">
-            <img src={require('../img/home.svg')} alt="首頁" />
+            <img src={HomeIcon} alt="首頁" />
           </Link>
         </li>
         <li>
           <Link to="/setting">
-            <img src={require('../img/setting.svg')} alt="設定" />
+            <img src={SettingIcon} alt="設定" />
           </Link>
         </li>
         <li>
           <Link to="/tidal">
-            <img src={require('../img/tidal.svg')} alt="潮汐" />
+            <img src={TidalIcon} alt="潮汐" />
           </Link>
         </li>
       </ul>
