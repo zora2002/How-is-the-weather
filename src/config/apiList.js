@@ -2,6 +2,8 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import cityDistricts from './cityDistricts'
 
+
+const baseURL = import.meta.env.VITE_API_BASE_URL
 /**
  * 一般天氣預報-今明 36 小時天氣預報
  * @param  {String} locationName 搜尋縣市或區域
@@ -9,7 +11,7 @@ import cityDistricts from './cityDistricts'
 export function country36HoursForecast({ locationName }) {
   return axios({
     method: 'POST',
-    baseURL: process.env.REACT_APP_API_BASE_URL,
+    baseURL,
     url: '/weather',
     data: {
       url: 'F-C0032-001',
@@ -34,7 +36,7 @@ export function city2Day1WeekForecast(params, city, day) {
   }
   return axios({
     method: 'POST',
-    baseURL: process.env.REACT_APP_API_BASE_URL,
+    baseURL,
     url: '/weather',
     data: {
       url: 'F-D0047-' + code,
@@ -60,7 +62,7 @@ export function wgs84ToCityDistrict(longitude, latitude) {
 export function tidal1Month({ locationName }) {
   return axios({
     method: 'POST',
-    baseURL: process.env.REACT_APP_API_BASE_URL,
+    baseURL,
     url: '/weather',
     data: {
       url: 'F-A0021-001',
@@ -73,7 +75,7 @@ export function tidal1Month({ locationName }) {
 export function sunriceSunsetTime({ locationName }) {
   return axios({
     method: 'POST',
-    baseURL: process.env.REACT_APP_API_BASE_URL,
+    baseURL,
     url: '/weather',
     data: {
       url: 'A-B0062-001',
@@ -88,7 +90,7 @@ export function sunriceSunsetTime({ locationName }) {
 export function moonriceMoonsetTime({ locationName }) {
   return axios({
     method: 'POST',
-    baseURL: process.env.REACT_APP_API_BASE_URL,
+    baseURL,
     url: '/weather',
     data: {
       url: 'A-B0063-001',
