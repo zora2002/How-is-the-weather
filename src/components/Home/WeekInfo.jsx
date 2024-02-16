@@ -1,6 +1,6 @@
 import React from 'react'
 import '@/style/Home/WeekInfo.scss'
-import { isApi12hrFirstArrayHour, removeArrayFirstItem } from '@/function/time'
+import { isApi12hrFirstArrayHour, removeArrayFirstItem } from '@/utils/time'
 import store from '@/store'
 import DashboardDiv from '@/style/Home/DashboardDiv'
 

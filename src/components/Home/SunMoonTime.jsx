@@ -2,7 +2,7 @@ import React from 'react'
 import dayjs from 'dayjs'
 
 import '@/style/Home/SunMoonTime.scss'
-import { getSunMoonData, timeToMinutes } from '@/function/time'
+import { getSunMoonData, timeToMinutes } from '@/utils/time'
 import store from '@/store'
 import DashboardDiv from '@/style/Home/DashboardDiv'
 import { sunriceSunsetTime, moonriceMoonsetTime } from '@/config/apiList'

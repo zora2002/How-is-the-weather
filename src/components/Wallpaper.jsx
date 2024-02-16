@@ -1,7 +1,7 @@
 import React from 'react'
 import dayjs from 'dayjs'
 
-import { getTimePeriod } from '@/function/time'
+import { getTimePeriod } from '@/utils/time'
 import '@/style/Wallpaper.scss'
 import { sunriceSunsetTime } from '@/config/apiList'
 

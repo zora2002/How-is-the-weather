@@ -1,7 +1,7 @@
 import React from 'react'
 import dayjs from 'dayjs'
 
-import { isApi3hrFirstArrayHour } from '@/function/time'
+import { isApi3hrFirstArrayHour } from '@/utils/time'
 import DashboardDiv from '@/style/Home/DashboardDiv'
 import store from '@/store'
 
