@@ -3,9 +3,9 @@ import { Link, Outlet } from 'react-router-dom'
 
 import '@/assets/style/SideBar.scss'
 
-import HomeIcon from '@/img/home.svg'
-import SettingIcon from '@/img/setting.svg'
-import TidalIcon from '@/img/tidal.svg'
+import HomeIcon from '@/assets/img/home.svg'
+import SettingIcon from '@/assets/img/setting.svg'
+import TidalIcon from '@/assets/img/tidal.svg'
 
 const SideBar = () => {
   return (

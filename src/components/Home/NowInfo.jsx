@@ -13,7 +13,7 @@ const checkIconTimeType = () => {
 function DynamicIcon({ icon }) {
   const [image, setImage] = React.useState(null)
 
-  import(`../../img/icon/${checkIconTimeType()}/${icon}.svg`)
+  import(`../../assets/img/icon/${checkIconTimeType()}/${icon}.svg`)
     .then((image) => {
       setImage(image.default)
     })

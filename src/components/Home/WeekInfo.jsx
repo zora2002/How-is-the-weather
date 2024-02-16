@@ -94,7 +94,7 @@ function setting2SVG(tempList, xlineNum, xEveryWidth, yTotalHeight) {
 function DynamicIcon({ dayNightTime, icon }) {
   const [image, setImage] = React.useState(null)
 
-  import(`../../img/icon/${dayNightTime}/${parseInt(icon[dayNightTime])}.svg`)
+  import(`../../assets/img/icon/${dayNightTime}/${parseInt(icon[dayNightTime])}.svg`)
     .then((image) => {
       setImage(image.default)
     })
