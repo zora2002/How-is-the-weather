@@ -1,8 +1,8 @@
 import React from 'react'
 import dayjs from 'dayjs'
 
-import '@/style/Home/Home.scss'
-import '@/style/Home/NowInfo.scss'
+import '@/assets/style/Home/Home.scss'
+import '@/assets/style/Home/NowInfo.scss'
 
 import TwentyFourHours from '@/components/Home/TwentyFourHours'
 import NowInfo from '@/components/Home/NowInfo'

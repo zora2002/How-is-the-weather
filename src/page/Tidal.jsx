@@ -4,7 +4,7 @@ import { Line } from 'react-chartjs-2'
 import 'chartjs-adapter-moment'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
-import '@/style/Tidal.scss'
+import '@/assets/style/Tidal.scss'
 import { tidal1Month } from '@/config/apiList'
 
 ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartDataLabels)

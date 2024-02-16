@@ -1,7 +1,7 @@
 import React from 'react'
 
 import store from '@/store'
-import '@/style/Setting.scss'
+import '@/assets/style/Setting.scss'
 import cityDistricts from '@/config/cityDistricts'
 import { wgs84ToCityDistrict } from '@/config/apiList'
 

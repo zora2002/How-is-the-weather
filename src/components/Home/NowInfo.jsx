@@ -2,7 +2,7 @@ import React from 'react'
 import dayjs from 'dayjs'
 
 import { isApi3hrFirstArrayHour } from '@/utils/time'
-import DashboardDiv from '@/style/Home/DashboardDiv'
+import DashboardDiv from '@/assets/style/Home/DashboardDiv'
 import store from '@/store'
 
 const checkIconTimeType = () => {
