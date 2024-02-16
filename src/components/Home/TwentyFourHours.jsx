@@ -1,8 +1,7 @@
 import React from 'react'
-import '../../style/Home/TwentyFourHours.scss'
-// import { settingSVG } from '../../function/svg'
-import store from '../../store'
-import DashboardDiv from '../../style/Home/DashboardDiv'
+import '@/style/Home/TwentyFourHours.scss'
+import store from '@/store'
+import DashboardDiv from '@/style/Home/DashboardDiv'
 
 export function settingSVG(tempList, xlineNum, xEveryWidth, yTotalHeight) {
   const originTempList = [...tempList]

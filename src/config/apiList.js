@@ -1,6 +1,7 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
-import cityDistricts from './cityDistricts'
+
+import cityDistricts from '@/config/cityDistricts'
 
 
 const baseURL = import.meta.env.VITE_API_BASE_URL

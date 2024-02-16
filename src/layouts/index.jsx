@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
-import '../style/SideBar.scss'
 
-import HomeIcon from '../img/home.svg'
-import SettingIcon from '../img/setting.svg'
-import TidalIcon from '../img/tidal.svg'
+import '@/style/SideBar.scss'
+
+import HomeIcon from '@/img/home.svg'
+import SettingIcon from '@/img/setting.svg'
+import TidalIcon from '@/img/tidal.svg'
 
 const SideBar = () => {
   return (

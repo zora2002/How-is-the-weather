@@ -1,8 +1,9 @@
 import React from 'react'
-import store from '../store'
-import '../style/Setting.scss'
-import cityDistricts from '../config/cityDistricts'
-import { wgs84ToCityDistrict } from '../config/apiList'
+
+import store from '@/store'
+import '@/style/Setting.scss'
+import cityDistricts from '@/config/cityDistricts'
+import { wgs84ToCityDistrict } from '@/config/apiList'
 
 const Setting = () => {
   const cityList = cityDistricts.cities

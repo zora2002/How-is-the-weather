@@ -1,12 +1,14 @@
 import React from 'react'
 import dayjs from 'dayjs'
-import '../style/Home/Home.scss'
-import '../style/Home/NowInfo.scss'
-import TwentyFourHours from '../components/Home/TwentyFourHours'
-import NowInfo from '../components/Home/NowInfo'
-import WeekInfo from '../components/Home/WeekInfo'
-import SunMoonTime from '../components/Home/SunMoonTime'
-import { city2Day1WeekForecast, country36HoursForecast } from '../config/apiList'
+
+import '@/style/Home/Home.scss'
+import '@/style/Home/NowInfo.scss'
+
+import TwentyFourHours from '@/components/Home/TwentyFourHours'
+import NowInfo from '@/components/Home/NowInfo'
+import WeekInfo from '@/components/Home/WeekInfo'
+import SunMoonTime from '@/components/Home/SunMoonTime'
+import { city2Day1WeekForecast, country36HoursForecast } from '@/config/apiList'
 
 const Home = ({ time, location }) => {
   const [hour, setHour] = React.useState(dayjs().format('HH'))

@@ -1,6 +1,6 @@
 import React from 'react'
-import './App.scss'
-import AllRoutes from './routes'
+import '@/App.scss'
+import AllRoutes from '@/routes'
 
 import { connect } from 'react-redux'
 

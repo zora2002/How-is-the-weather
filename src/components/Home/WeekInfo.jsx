@@ -1,8 +1,8 @@
 import React from 'react'
-import '../../style/Home/WeekInfo.scss'
-import { isApi12hrFirstArrayHour, removeArrayFirstItem } from '../../function/time'
-import store from '../../store'
-import DashboardDiv from '../../style/Home/DashboardDiv'
+import '@/style/Home/WeekInfo.scss'
+import { isApi12hrFirstArrayHour, removeArrayFirstItem } from '@/function/time'
+import store from '@/store'
+import DashboardDiv from '@/style/Home/DashboardDiv'
 
 function setting2SVG(tempList, xlineNum, xEveryWidth, yTotalHeight) {
   const originTempList = { ...tempList }

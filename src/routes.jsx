@@ -1,12 +1,12 @@
 import { Navigate, useRoutes } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 
-import Layout from './layouts'
+import Layout from '@/layouts'
 
-import Wallpaper from './components/Wallpaper'
-import Home from './page/Home'
-import Setting from './page/Setting'
-import Tidal from './page/Tidal'
+import Wallpaper from '@/components/Wallpaper'
+import Home from '@/page/Home'
+import Setting from '@/page/Setting'
+import Tidal from '@/page/Tidal'
 
 const HomePage = ({ time, location }) => {
   return (

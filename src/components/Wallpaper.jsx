@@ -1,8 +1,9 @@
 import React from 'react'
 import dayjs from 'dayjs'
-import { getTimePeriod } from '../function/time'
-import '../style/Wallpaper.scss'
-import { sunriceSunsetTime } from '../config/apiList'
+
+import { getTimePeriod } from '@/function/time'
+import '@/style/Wallpaper.scss'
+import { sunriceSunsetTime } from '@/config/apiList'
 
 const Wallpaper = ({ time, location }) => {
   const [timePeriod, setTimePeriod] = React.useState('')

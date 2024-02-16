@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { tidal1Month } from '../config/apiList'
-import 'chartjs-adapter-moment'
-import { Line } from 'react-chartjs-2'
 import { Chart as ChartJS, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
-import '../style/Tidal.scss'
+import { Line } from 'react-chartjs-2'
+import 'chartjs-adapter-moment'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
+
+import '@/style/Tidal.scss'
+import { tidal1Month } from '@/config/apiList'
 
 ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartDataLabels)
 

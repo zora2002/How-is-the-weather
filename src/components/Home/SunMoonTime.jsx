@@ -1,10 +1,11 @@
 import React from 'react'
 import dayjs from 'dayjs'
-import '../../style/Home/SunMoonTime.scss'
-import { getSunMoonData, timeToMinutes } from '../../function/time'
-import store from '../../store'
-import DashboardDiv from '../../style/Home/DashboardDiv'
-import { sunriceSunsetTime, moonriceMoonsetTime } from '../../config/apiList'
+
+import '@/style/Home/SunMoonTime.scss'
+import { getSunMoonData, timeToMinutes } from '@/function/time'
+import store from '@/store'
+import DashboardDiv from '@/style/Home/DashboardDiv'
+import { sunriceSunsetTime, moonriceMoonsetTime } from '@/config/apiList'
 
 const center = { x: 250, y: 250 }
 const sunR = 200
