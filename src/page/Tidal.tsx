@@ -1,11 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import { Chart as ChartJS, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
+import { useEffect, useState } from 'react'
+import {
+  Chart as ChartJS,
+  TimeScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  ChartData,
+} from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import 'chartjs-adapter-moment'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
+import { Tidal1MonthResponseData } from '@/ts-common/api-response'
+import { tidal1MonthData } from '@/utils/api-list'
+
 import '@/assets/style/Tidal.scss'
-import { tidal1Month } from '@/config/apiList'
+
+type TidalApiData = Tidal1MonthResponseData['TideForecasts'][0]['Location']['TimePeriods']['Daily']
+type ChartDataTType = 'line'
+type ChartDataTData = { x: Date; y: number }[]
+type ChartInfo = ChartData<ChartDataTType, ChartDataTData>
 
 ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartDataLabels)
 
@@ -27,7 +45,7 @@ const RGBA = {
 
 const setRgba = (color = RGBA.GRAY, opacity = 0.7) => `rgba(${color}, ${opacity})`
 
-const chartOptions = {
+const chartOptions: ChartOptions<'line'> = {
   scales: {
     x: {
       type: 'time',
@@ -37,7 +55,7 @@ const chartOptions = {
     },
     y: {
       grid: {
-        borderDash: [2, 5],
+        tickBorderDash: [2, 5],
       },
     },
   },
@@ -71,12 +89,14 @@ const chartOptions = {
     datalabels: {
       align: 'top',
       color: [setRgba(RGBA.BLUE, 0.6), setRgba(RGBA.YELLOW, 1)],
-      formatter: (value, context) => value.y,
+      formatter: (value, context) => {
+        return value.y
+      },
     },
   },
 }
 
-const CHRAT_DATA_DAFAULT = {
+const CHRAT_DATA_DAFAULT: ChartInfo = {
   datasets: [
     {
       label: 'Tidal',
@@ -85,56 +105,52 @@ const CHRAT_DATA_DAFAULT = {
   ],
 }
 
-const getData = async () => {
-  const res = await tidal1Month({ locationName: '屏東縣恆春鎮' })
-  return res
-}
-
-const chartDataHandler = ({ data, showDay = SHOW_DAY_DAFAULT }) => {
+const chartInfoHandler = ({ data, showDay }: { data: TidalApiData; showDay: number }): ChartInfo => {
   if (!data) return CHRAT_DATA_DAFAULT
 
-  let list = []
-  data.slice(0, showDay + 1).forEach((i) => {
-    i.Time.forEach((item) => {
-      list.push({
-        x: new Date(item.DateTime),
-        y: parseInt(item.TideHeights.AboveLocalMSL, 10),
-      })
-    })
-  })
-
-  // 要深層解構
   let chartData = {
     ...CHRAT_DATA_DAFAULT,
     datasets: [...CHRAT_DATA_DAFAULT.datasets],
   }
-  chartData.datasets[0].data = list
+  chartData.datasets[0].data = data
+    .slice(0, showDay + 1)
+    ?.map((i) =>
+      i.Time?.map((t) => ({
+        x: new Date(t.DateTime),
+        y: t.TideHeights.AboveLocalMSL,
+      }))
+    )
+    .flat()
 
   return chartData
 }
 
 const Tidal = () => {
-  const [tidalApiData, setApiData] = useState({})
-  const [chartData, setChartData] = useState(CHRAT_DATA_DAFAULT)
-  const [showDay, setShowDay] = useState(SHOW_DAY_DAFAULT)
-
-  const init = async () => {
-    const apiResult = await getData()
-    const list = apiResult.data.records.TideForecasts[0].Location.TimePeriods.Daily
-    setApiData(list)
-    const chartDataList = chartDataHandler({ data: list })
-    setChartData(chartDataList)
-  }
+  const [tidalApiData, setApiData] = useState<TidalApiData>([])
+  const [chartInfo, setChartInfo] = useState<ChartInfo>(CHRAT_DATA_DAFAULT)
+  const [showDay, setShowDay] = useState<number>(SHOW_DAY_DAFAULT)
 
   useEffect(() => {
-    init()
+    const apiDatHandler = async () => {
+      try {
+        const res = await tidal1MonthData({ tidalLocation: '屏東縣恆春鎮' })
+        const list = res?.TideForecasts[0]?.Location?.TimePeriods?.Daily
+        setApiData(list)
+        const chartDataList = chartInfoHandler({ data: list, showDay: SHOW_DAY_DAFAULT })
+        setChartInfo(chartDataList)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    apiDatHandler()
   }, [])
 
   const showDayHandler = (event) => {
     const newDay = parseInt(event.target.value, 10)
     setShowDay(newDay)
-    const chartDataList = chartDataHandler({ data: tidalApiData, showDay: newDay })
-    setChartData(chartDataList)
+    const chartDataList = chartInfoHandler({ data: tidalApiData, showDay: newDay })
+    setChartInfo(chartDataList)
   }
 
   return (
@@ -152,7 +168,7 @@ const Tidal = () => {
         </select>
       </div>
       <div className="tidal-chart">
-        <Line options={chartOptions} data={chartData} />
+        <Line options={chartOptions} data={chartInfo} />
       </div>
     </div>
   )

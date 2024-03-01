@@ -1,17 +1,27 @@
-import React from 'react'
+import { useState } from 'react'
+import axios from 'axios'
 
-import store from '@/store'
+import useApp from '@/contexts/app-context-use'
 import '@/assets/style/Setting.scss'
 import cityDistricts from '@/config/cityDistricts'
-import { wgs84ToCityDistrict } from '@/config/apiList'
+
+/**
+ * 座標轉行政區資料
+ * @param  {String} longitude 經度
+ * @param  {String} latitude 緯度
+ */
+const wgs84ToCityDistrict = (longitude: string, latitude: string) => {
+  // https://data.moi.gov.tw/MoiOD/Data/DataDetail.aspx?oid=CA6D10B1-C474-41DB-8B53-28E7E4E18977
+  return axios.get(`https://api.nlsc.gov.tw/other/TownVillagePointQuery/${longitude}/${latitude}/4326`)
+}
 
 const Setting = () => {
+  const { location, dispatch, dashboard } = useApp()
   const cityList = cityDistricts.cities
-  const [districtList, setDistrictList] = React.useState([])
-  const [manualCity, setManualCity] = React.useState('')
-  const [manualDistrict, setManualDistrict] = React.useState('')
-  const city = store.getState().location.searchCity
-  const district = store.getState().location.searchDistrict
+  const [districtList, setDistrictList] = useState([])
+  const [manualCity, setManualCity] = useState('')
+  const [manualDistrict, setManualDistrict] = useState('')
+  const [opacity, setOpacity] = useState(dashboard.backgroundColorOpacity)
 
   const manualCityHandler = (event) => {
     setManualCity(event.target.value)
@@ -25,23 +35,19 @@ const Setting = () => {
   const manualUpdateLocation = () => {
     if (!manualCity) {
       console.log('請選縣市')
-    } else if (!manualDistrict) {
-      console.log('請選鄉鎮市區')
-    } else {
-      setLocalStorageLocation(manualCity, manualDistrict)
-      store.dispatch({
-        type: 'UPDATE_LOCATION',
-        data: {
-          searchCity: manualCity,
-          searchDistrict: manualDistrict,
-        },
-      })
+      return
     }
-  }
-
-  const setLocalStorageLocation = (city, district) => {
-    localStorage.city = city
-    localStorage.district = district
+    if (!manualDistrict) {
+      console.log('請選鄉鎮市區')
+      return
+    }
+    dispatch({
+      type: 'setLocation',
+      payload: {
+        searchCity: manualCity,
+        searchDistrict: manualDistrict,
+      },
+    })
   }
 
   const autoUpdateLocation = () => {
@@ -50,26 +56,24 @@ const Setting = () => {
       console.log('Geolocation is not supported by your browser')
       return
     }
-    const success = (position) => {
+    const success = async (position) => {
       setManualCity('')
       manualDistrictHandler('')
       //WGS-84
       const latitude = position.coords.latitude
       const longitude = position.coords.longitude
-      wgs84ToCityDistrict(longitude, latitude)
-        .then((response) => {
-          setLocalStorageLocation(response.data.ctyName, response.data.townName)
-          store.dispatch({
-            type: 'UPDATE_LOCATION',
-            data: {
-              searchCity: response.data.ctyName,
-              searchDistrict: response.data.townName,
-            },
-          })
+      try {
+        const response = await wgs84ToCityDistrict(longitude, latitude)
+        dispatch({
+          type: 'setLocation',
+          payload: {
+            searchCity: response.data.ctyName,
+            searchDistrict: response.data.townName,
+          },
         })
-        .catch((error) => {
-          console.log(error)
-        })
+      } catch (error) {
+        console.log(error)
+      }
     }
     const error = () => {
       console.log('定位失敗')
@@ -77,17 +81,12 @@ const Setting = () => {
     navigator.geolocation.getCurrentPosition(success, error)
   }
 
-  const opacity = store.getState().dashboard.backgroundColorOpacity
-  const [dashboardBackgroundColorOpacity, setDashboardBackgroundColorOpacity] = React.useState(opacity)
-
   const updateDashBoard = (event) => {
-    store.dispatch({
-      type: 'UPDATE_DASHBOARD',
-      data: {
-        backgroundColorOpacity: event.target.value,
-      },
+    dispatch({
+      type: 'setBackgroundColorOpacity',
+      payload: event.target.value,
     })
-    setDashboardBackgroundColorOpacity(event.target.value)
+    setOpacity(event.target.value)
   }
 
   return (
@@ -97,7 +96,7 @@ const Setting = () => {
           <li className="now-location">
             <div className="item">現在位置</div>
             <div className="content">
-              {city} {district}
+              {location.searchCity} {location.searchDistrict}
             </div>
           </li>
           <li className="manual">
@@ -138,14 +137,8 @@ const Setting = () => {
           <li>
             <div className="item">透明度</div>
             <div className="content">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={dashboardBackgroundColorOpacity}
-                onChange={updateDashBoard}
-              />
-              {opacity}
+              <input type="range" min="0" max="100" value={opacity} onChange={updateDashBoard} />
+              {dashboard.backgroundColorOpacity}
             </div>
           </li>
         </ul>
