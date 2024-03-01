@@ -20,34 +20,23 @@
       margin: 7vh auto;
     }
     li {
-      // background-color: palegoldenrod;
       width: 90%;
       height: 5vh;
       margin: 3.5vh auto;
       line-height: 5vh;
     }
     .item {
-      // background-color: paleturquoise;
       width: 17%;
       margin: auto 0 auto 4%;
       float: left;
-      letter-spacing: 2px
+      letter-spacing: 2px;
     }
     .content {
-      // background-color: pink;
       width: 79%;
       float: right;
       select {
         width: 20%;
-        height: 5vh;
         margin: 0 2% 0 0;
-        padding: 5px;
-        font-size: 2vh;
-        border: 0;
-        border-radius: 1vh;
-        // 隱藏箭頭
-        // -moz-appearance: none;
-        // -webkit-appearance: none;
       }
       button {
         height: 5vh;
@@ -57,7 +46,7 @@
         border-radius: 0.5vh;
         background: #d0efff;
       }
-      input[type="range"] {
+      input[type='range'] {
         overflow: hidden;
         width: 50%;
         height: 1.5vh;
@@ -65,13 +54,22 @@
         -webkit-appearance: none;
         background-color: #d8d8d8;
       }
-      input[type="range"]::-webkit-slider-thumb {
-        width: 1vw;
-        height: 1vw;
+      input[type='range']::-webkit-slider-thumb {
+        width: 1.5vh;
+        height: 1.5vh;
         cursor: ew-resize;
         -webkit-appearance: none;
         background: #579abb;
         box-shadow: -20vw 0 0 20vw #d0efff;
+      }
+      input[type='range']::-moz-range-thumb {
+        width: 1.5vh;
+        height: 1.5vh;
+        cursor: ew-resize;
+        background: #579abb;
+        box-shadow: -20vw 0 0 20vw #d0efff;
+        border-radius: 0;
+        border-color: #579abb;
       }
     }
   }

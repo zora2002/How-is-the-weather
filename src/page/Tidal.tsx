@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   Chart as ChartJS,
   TimeScale,
@@ -17,13 +17,14 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 import { Tidal1MonthResponseData } from '@/ts-common/api-response'
 import { tidal1MonthData } from '@/utils/api-list'
+import locationJson from '@/doc/A0021-001.json'
 
 import '@/assets/style/Tidal.scss'
 
 type TidalApiData = Tidal1MonthResponseData['TideForecasts'][0]['Location']['TimePeriods']['Daily']
 type ChartDataTType = 'line'
 type ChartDataTData = { x: Date; y: number }[]
-type ChartInfo = ChartData<ChartDataTType, ChartDataTData>
+type ChartInfo = ChartData<ChartDataTType, ChartDataTData>['datasets'][0]['data']
 
 ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartDataLabels)
 
@@ -96,23 +97,12 @@ const chartOptions: ChartOptions<'line'> = {
   },
 }
 
-const CHRAT_DATA_DAFAULT: ChartInfo = {
-  datasets: [
-    {
-      label: 'Tidal',
-      data: [],
-    },
-  ],
-}
+const locationList = locationJson.data
 
 const chartInfoHandler = ({ data, showDay }: { data: TidalApiData; showDay: number }): ChartInfo => {
-  if (!data) return CHRAT_DATA_DAFAULT
+  if (!data) return []
 
-  let chartData = {
-    ...CHRAT_DATA_DAFAULT,
-    datasets: [...CHRAT_DATA_DAFAULT.datasets],
-  }
-  chartData.datasets[0].data = data
+  let chartData = data
     .slice(0, showDay + 1)
     ?.map((i) =>
       i.Time?.map((t) => ({
@@ -125,26 +115,30 @@ const chartInfoHandler = ({ data, showDay }: { data: TidalApiData; showDay: numb
   return chartData
 }
 
+const apiDataHandler = async ({ location }: { location: string }) => {
+  try {
+    const res = await tidal1MonthData({ tidalLocation: location })
+    const list = res?.TideForecasts[0]?.Location?.TimePeriods?.Daily
+    return list
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const Tidal = () => {
   const [tidalApiData, setApiData] = useState<TidalApiData>([])
-  const [chartInfo, setChartInfo] = useState<ChartInfo>(CHRAT_DATA_DAFAULT)
+  const [chartInfo, setChartInfo] = useState<ChartInfo>([])
   const [showDay, setShowDay] = useState<number>(SHOW_DAY_DAFAULT)
+  const [location, setLocation] = useState<string>('')
 
-  useEffect(() => {
-    const apiDatHandler = async () => {
-      try {
-        const res = await tidal1MonthData({ tidalLocation: '屏東縣恆春鎮' })
-        const list = res?.TideForecasts[0]?.Location?.TimePeriods?.Daily
-        setApiData(list)
-        const chartDataList = chartInfoHandler({ data: list, showDay: SHOW_DAY_DAFAULT })
-        setChartInfo(chartDataList)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    apiDatHandler()
-  }, [])
+  const locationHandler = async (event) => {
+    const newLocation = event.target.value
+    setLocation(newLocation)
+    const list = await apiDataHandler({ location: newLocation })
+    setApiData(list)
+    const chartDataList = chartInfoHandler({ data: list, showDay })
+    setChartInfo(chartDataList)
+  }
 
   const showDayHandler = (event) => {
     const newDay = parseInt(event.target.value, 10)
@@ -156,19 +150,50 @@ const Tidal = () => {
   return (
     <div className="tidal-bg">
       <div className="tidal-info">
-        <div className="left">地點：{}</div>
-        <select className="right" value={showDay} onChange={showDayHandler}>
-          {SELECT_LIST.map((i) => {
-            return (
-              <option value={i.value} key={i.value}>
-                {i.name}
-              </option>
-            )
-          })}
-        </select>
+        <div className="factor">
+          <div>地點：</div>
+          <select value={location} onChange={locationHandler}>
+            <option disabled value={''}>
+              鄉鎮、海水浴場、海釣、漁港、潛點、衝浪
+            </option>
+            {locationList.map((i) => {
+              return (
+                <option value={i.locationName} key={i.locationName}>
+                  {i.locationName}
+                </option>
+              )
+            })}
+          </select>
+        </div>
+        <div className="factor">
+          <div>時長：</div>
+          <select value={showDay} onChange={showDayHandler}>
+            {SELECT_LIST.map((i) => {
+              return (
+                <option value={i.value} key={i.value}>
+                  {i.name}
+                </option>
+              )
+            })}
+          </select>
+        </div>
       </div>
       <div className="tidal-chart">
-        <Line options={chartOptions} data={chartInfo} />
+        {chartInfo.length === 0 ? (
+          <div className="none">↖請選擇一個地點</div>
+        ) : (
+          <Line
+            options={chartOptions}
+            data={{
+              datasets: [
+                {
+                  label: 'Tidal',
+                  data: chartInfo,
+                },
+              ],
+            }}
+          />
+        )}
       </div>
     </div>
   )

@@ -5,7 +5,7 @@ import AllRoutes from '@/routes'
 import { AppContextProvider } from './contexts/app-context'
 import { cancelPreviousPageRequests } from './utils/api-setting'
 
-import '@/App.scss'
+import '@/assets/style/App.scss'
 
 let previousPath = ''
 let currentPath = ''
