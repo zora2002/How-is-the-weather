@@ -46,6 +46,9 @@
         border-radius: 0.5vh;
         background: #d0efff;
       }
+      button:disabled {
+        background: #ececec;
+      }
       input[type='range'] {
         overflow: hidden;
         width: 50%;
