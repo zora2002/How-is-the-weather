@@ -5,6 +5,7 @@ import AllRoutes from '@/routes'
 import { AppContextProvider } from './contexts/app-context'
 import { cancelPreviousPageRequests } from './utils/api-setting'
 
+import 'react-toastify/dist/ReactToastify.css'
 import '@/assets/style/App.scss'
 
 let previousPath = ''

@@ -9,10 +9,7 @@ interface RiceSet {
   set: dayjs.Dayjs
 }
 
-type RiceSetInfo = Record<
-  'yesterday' | 'today' | 'tomorrow',
-  RiceSet
->
+type RiceSetInfo = Record<'yesterday' | 'today' | 'tomorrow', RiceSet>
 export type Info = Record<'sun' | 'moon', RiceSetInfo>
 
 export const CENTER = { X: 250, Y: 250 }
@@ -24,7 +21,7 @@ enum MooveType {
   RiceEarly = 'A',
   OnlyRice = 'B',
   SetEarly = 'C',
-  OnlySet = 'D'
+  OnlySet = 'D',
 }
 
 enum ZoneType {
@@ -33,7 +30,7 @@ enum ZoneType {
   AfterSetBeforeToday = 'c',
   AfterTodayBeforeRice = 'd',
   AfetrRiceBeforeSet = 'ab',
-  AfetrSetBeforeRice = 'cd'
+  AfetrSetBeforeRice = 'cd',
 }
 
 const sunInfoHandler = (date: string, apiSunData: SunResponseData): RiceSet => {
@@ -43,7 +40,7 @@ const sunInfoHandler = (date: string, apiSunData: SunResponseData): RiceSet => {
   return {
     date,
     rice: dayjs(`${date} ${riceTime}`),
-    set: dayjs(`${date} ${setTime}`)
+    set: dayjs(`${date} ${setTime}`),
   }
 }
 
@@ -54,11 +51,15 @@ const moonInfoHandler = (date: string, apiMoonData: MoonResponseData): RiceSet =
   return {
     date,
     rice: dayjs(`${date} ${riceTime}`),
-    set: dayjs(`${date} ${setTime}`)
+    set: dayjs(`${date} ${setTime}`),
   }
 }
 
-export const infoHandler = (dateTime: dayjs.Dayjs, apiSunData: SunResponseData, apiMoonData: MoonResponseData): Info => {
+export const infoHandler = (
+  dateTime: dayjs.Dayjs,
+  apiSunData: SunResponseData,
+  apiMoonData: MoonResponseData
+): Info => {
   const yesterday = dateTime.subtract(1, 'day').format('YYYY-MM-DD')
   const today = dateTime.format('YYYY-MM-DD')
   const tomorrow = dateTime.add(1, 'day').format('YYYY-MM-DD')
@@ -136,9 +137,18 @@ const angleHandler = (zoneType: ZoneType, dateTime: dayjs.Dayjs, riceSetInfo: Ri
       const diffYesterdayRice = dayjs(today.date).diff(yesterday.rice, 'm')
       return nowAngle(diffYesterdayRice + todaySetInMinutes, diffYesterdayRice + nowInMinutes)
     case ZoneType.AfterRiceBeforeToday:
-      return nowAngle(dayjs(tomorrow.date).diff(today.rice, 'm') + timeToMinutes(tomorrow.set), nowInMinutes - todayRiceInMinutes)
+      return nowAngle(
+        dayjs(tomorrow.date).diff(today.rice, 'm') + timeToMinutes(tomorrow.set),
+        nowInMinutes - todayRiceInMinutes
+      )
     case ZoneType.AfterSetBeforeToday:
-      return 180 + nowAngle(dayjs(tomorrow.date).diff(today.set, 'm') + timeToMinutes(tomorrow.rice), nowInMinutes - todaySetInMinutes)
+      return (
+        180 +
+        nowAngle(
+          dayjs(tomorrow.date).diff(today.set, 'm') + timeToMinutes(tomorrow.rice),
+          nowInMinutes - todaySetInMinutes
+        )
+      )
     case ZoneType.AfterTodayBeforeRice:
       const diffYesterdaySet = dayjs(today.date).diff(yesterday.set, 'm')
       return 180 + nowAngle(diffYesterdaySet + todayRiceInMinutes, diffYesterdaySet + nowInMinutes)
@@ -148,7 +158,7 @@ const angleHandler = (zoneType: ZoneType, dateTime: dayjs.Dayjs, riceSetInfo: Ri
       return 180 + nowAngle(todayRiceInMinutes - todaySetInMinutes, nowInMinutes - todaySetInMinutes)
     default:
       console.log('Something is wrong in "angleHandler"...')
-      break;
+      break
   }
 }
 

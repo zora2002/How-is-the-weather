@@ -9,7 +9,7 @@ import type {
   Weather7DayEvery12HourData,
   SunData,
   MoonData,
-  Tidal1MonthData
+  Tidal1MonthData,
 } from '@/ts-common/api-function'
 import type {
   Weather36HourEvery12HourResponseData,
@@ -17,7 +17,7 @@ import type {
   Weather7DayEvery12HourResponseData,
   SunResponseData,
   MoonResponseData,
-  Tidal1MonthResponseData
+  Tidal1MonthResponseData,
 } from '@/ts-common/api-response'
 import type {
   Weather36HourEvery12HourRequestData,
@@ -25,7 +25,7 @@ import type {
   Weather7DayEvery12HourRequestData,
   SunRequestData,
   MoonRequestData,
-  Tidal1MonthRequestData
+  Tidal1MonthRequestData,
 } from '@/ts-common/api-request'
 import { getInstance } from '@/utils/api-setting'
 
@@ -157,7 +157,6 @@ export const moonData: MoonData = async ({ location }) => {
   }
 }
 
-
 export const tidal1MonthData: Tidal1MonthData = async ({ tidalLocation }) => {
   try {
     const res = await runApi<Tidal1MonthResponseData, Tidal1MonthRequestData>({
@@ -172,6 +171,5 @@ export const tidal1MonthData: Tidal1MonthData = async ({ tidalLocation }) => {
     return res?.records
   } catch (error) {
     console.log(error)
-
   }
 }

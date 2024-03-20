@@ -5,7 +5,7 @@ export interface ResponseStructure<T> {
     fields: {
       id: string
       type: string
-    };
+    }
   }
   records: T
 }
@@ -30,8 +30,6 @@ export interface Weather36HourEvery12HourResponseData {
     }[]
   }[]
 }
-
-
 
 // NOTE 臺灣各縣市鄉鎮未來3天(72小時)逐3小時天氣預報
 // NOTE F-D0047-
@@ -64,7 +62,7 @@ export interface Weather3DayEvery3HourResponseData {
 
 // NOTE 臺灣各縣市鄉鎮未來1週逐12小時天氣預報
 // NOTE F-D0047-
-export interface Weather7DayEvery12HourResponseData extends Weather3DayEvery3HourResponseData { }
+export interface Weather7DayEvery12HourResponseData extends Weather3DayEvery3HourResponseData {}
 
 // NOTE 全臺各縣市每天的日出、日沒及太陽過中天等時刻資料-含有日出日沒時之方位及過中天時之仰角資料
 // NOTE A-B0062-001
