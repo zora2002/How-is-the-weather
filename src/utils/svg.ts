@@ -21,7 +21,7 @@ export interface Svg2PathD {
 
 export const setting1SVG = (list: string[], xlineNum: number, xEveryWidth: number, yTotalHeight: number) => {
   // X軸間距
-  const xline = Array.from({ length: xlineNum }, (_, i) => i * xEveryWidth);
+  const xline = Array.from(new Array(xlineNum), (_, i) => i * xEveryWidth)
   // 轉number
   const listInNum = list.map((i) => parseInt(i))
   // 各值與最大值的差
@@ -37,15 +37,15 @@ export const setting1SVG = (list: string[], xlineNum: number, xEveryWidth: numbe
     text: [],
     circle: [],
   }
-  let svg1PathD:string = 'M'
+  let svg1PathD: string = 'M'
 
   const OFFSET = {
     X: 27, // 讓svg對齊ul
     Y: 30, // 讓svg離icon往下移
     TEXT: {
       X: 10, // 讓文字與圈圈置中
-      Y: -10 // 讓文字離圈圈往上移
-    }
+      Y: -10, // 讓文字離圈圈往上移
+    },
   }
 
   xline.forEach((i, index) => {
@@ -74,11 +74,17 @@ export const setting1SVG = (list: string[], xlineNum: number, xEveryWidth: numbe
   }
 }
 
-export const setting2SVG = (dayList: string[], nightList:string[], xlineNum: number, xEveryWidth: number, yTotalHeight: number) => {
+export const setting2SVG = (
+  dayList: string[],
+  nightList: string[],
+  xlineNum: number,
+  xEveryWidth: number,
+  yTotalHeight: number
+) => {
   let mixlist = dayList.concat(nightList)
 
   // X軸間距
-  const xline = Array.from({ length: xlineNum }, (_, i) => i * xEveryWidth);
+  const xline = Array.from({ length: xlineNum }, (_, i) => i * xEveryWidth)
   // 轉number
   const dayInNum = dayList.map((i) => parseInt(i))
   const nightInNum = nightList.map((i) => parseInt(i))
@@ -110,20 +116,20 @@ export const setting2SVG = (dayList: string[], nightList:string[], xlineNum: num
     TEXT: {
       DAY: {
         X: 10, // 讓文字與圈圈置中
-        Y: -10 // 讓文字離圈圈往上移
+        Y: -10, // 讓文字離圈圈往上移
       },
       NIGHT: {
         X: 10, // 讓文字與圈圈置中
-        Y: 20 // 讓文字離圈圈往下移
-      }
-    }
+        Y: 20, // 讓文字離圈圈往下移
+      },
+    },
   }
 
   xline.forEach((i, index) => {
     const x = i + OFFSET.X
     const y = {
       day: dayHasHeight[index] + OFFSET.Y,
-      night: nightHasHeight[index] + OFFSET.Y
+      night: nightHasHeight[index] + OFFSET.Y,
     }
 
     // day
@@ -139,7 +145,6 @@ export const setting2SVG = (dayList: string[], nightList:string[], xlineNum: num
       cy: y.day,
     })
     svg2PathD.day += `${x},${y.day},`
-
 
     // night
     svgInfoList.text.push({

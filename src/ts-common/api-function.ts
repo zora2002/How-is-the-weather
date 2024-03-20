@@ -1,4 +1,12 @@
-import type { ResponseStructure, Weather36HourEvery12HourResponseData, Weather3DayEvery3HourResponseData, Weather7DayEvery12HourResponseData, SunResponseData, MoonResponseData, Tidal1MonthResponseData } from '@/ts-common/api-response'
+import type {
+  ResponseStructure,
+  Weather36HourEvery12HourResponseData,
+  Weather3DayEvery3HourResponseData,
+  Weather7DayEvery12HourResponseData,
+  SunResponseData,
+  MoonResponseData,
+  Tidal1MonthResponseData,
+} from '@/ts-common/api-response'
 import { Location } from '@/contexts/app-context.interface'
 
 export interface RunApiType {
@@ -8,7 +16,7 @@ export interface RunApiType {
     url,
     data,
     params,
-    headersContentType
+    headersContentType,
   }: {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE'
     baseURL?: string
@@ -24,37 +32,25 @@ export interface RunJsonApiType {
 }
 
 export interface Weather36HourEvery12HourData {
-  ({ location }: {
-    location: Location
-  }): Promise<Weather36HourEvery12HourResponseData>
+  ({ location }: { location: Location }): Promise<Weather36HourEvery12HourResponseData>
 }
 
 export interface Weather3DayEvery3HourData {
-  ({ location }: {
-    location: Location
-  }): Promise<Weather3DayEvery3HourResponseData>
+  ({ location }: { location: Location }): Promise<Weather3DayEvery3HourResponseData>
 }
 
 export interface Weather7DayEvery12HourData {
-  ({ location }: {
-    location: Location
-  }): Promise<Weather7DayEvery12HourResponseData>
+  ({ location }: { location: Location }): Promise<Weather7DayEvery12HourResponseData>
 }
 
 export interface SunData {
-  ({ location }: {
-    location: Location
-  }): Promise<SunResponseData>
+  ({ location }: { location: Location }): Promise<SunResponseData>
 }
 
 export interface MoonData {
-  ({ location }: {
-    location: Location
-  }): Promise<MoonResponseData>
+  ({ location }: { location: Location }): Promise<MoonResponseData>
 }
 
 export interface Tidal1MonthData {
-  ({ tidalLocation }: {
-    tidalLocation: string
-  }): Promise<Tidal1MonthResponseData>
+  ({ tidalLocation }: { tidalLocation: string }): Promise<Tidal1MonthResponseData>
 }

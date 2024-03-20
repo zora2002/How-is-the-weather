@@ -7,7 +7,6 @@ import { SunResponseData } from '@/ts-common/api-response'
 dayjs.extend(customParseFormat)
 dayjs.extend(isBetween)
 
-
 export function timeToMinutes(time: dayjs.Dayjs) {
   if (!time) return 0
   return time.hour() * 60 + time.minute()
@@ -33,7 +32,7 @@ export function getTimePeriod(apiData: SunResponseData, dateTime: dayjs.Dayjs) {
     { name: 'dusk', begin: dayjs(EndCivilTwilightTime, formatType).add(1, 'm') },
     { name: 'night', begin: dayjs(EndCivilTwilightTime, formatType).add(61, 'm') },
     { name: 'midnight', begin: dayjs('23:00', formatType), end: dayjs('23:59', formatType) },
-  ];
+  ]
 
   const now = dayjs(dateTime, formatType)
 
@@ -50,15 +49,9 @@ export function getTimePeriod(apiData: SunResponseData, dateTime: dayjs.Dayjs) {
  * isApi3hrFirstArrayHour 當前氣溫要選[0]還是[1](3小時間距)
  */
 export function isApi3hrFirstArrayHour(nowHour: number, apiFirstHour: number) {
-  if (
-    (apiFirstHour === 21 && (nowHour === 0 || nowHour === 1 || nowHour === 2)) ||
-    nowHour > apiFirstHour + 2
-  ) {
+  if ((apiFirstHour === 21 && (nowHour === 0 || nowHour === 1 || nowHour === 2)) || nowHour > apiFirstHour + 2) {
     return false
-  } else if (
-    (apiFirstHour === 0 && (nowHour === 21 || nowHour === 22 || nowHour === 23)) ||
-    nowHour < apiFirstHour
-  ) {
+  } else if ((apiFirstHour === 0 && (nowHour === 21 || nowHour === 22 || nowHour === 23)) || nowHour < apiFirstHour) {
     return true
   } else if (apiFirstHour <= nowHour || nowHour <= apiFirstHour + 2) {
     return true
