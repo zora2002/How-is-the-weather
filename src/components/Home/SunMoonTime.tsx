@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import useApp from '@/contexts/app-context-use'
 import DashboardDiv from '@/components/Home/DashboardDiv'
+import Area404 from '@/components/Home/area404'
 import type { ApiDataCollection } from '@/page/Home'
 import { CENTER, SUN_R, MOON_R, infoHandler, translateHandler, Info } from '@/utils/sun-moon-helper'
 
@@ -13,8 +14,14 @@ const SunMoonTime = ({ apiDataCollection }: { apiDataCollection: ApiDataCollecti
   const [sunTrans, setSunTrans] = useState<string>('translate(0 0)')
   const [moonTrans, setMoonTrans] = useState('translate(0 0)')
 
+  const [is404, setIs404] = useState<boolean>(false)
+
   useEffect(() => {
     const { sun, moon } = apiDataCollection
+
+    setIs404(!Boolean(sun) || !Boolean(moon))
+    if (!sun || !moon) return
+
     const info = infoHandler(dateTime, sun, moon)
     setInfo(info)
   }, [apiDataCollection])
@@ -25,6 +32,14 @@ const SunMoonTime = ({ apiDataCollection }: { apiDataCollection: ApiDataCollecti
     setSunTrans(`translate(${sunTrans.x} ${sunTrans.y})`)
     setMoonTrans(`translate(${moonTrans.x} ${moonTrans.y})`)
   }, [info, dateTime.minute()])
+
+  if (is404) {
+    return (
+      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="sun-moon-time">
+        <Area404 />
+      </DashboardDiv>
+    )
+  }
 
   return (
     <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="sun-moon-time">

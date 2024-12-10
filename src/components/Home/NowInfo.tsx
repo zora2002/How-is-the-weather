@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
 
 import useApp from '@/contexts/app-context-use'
-import { isApi3hrFirstArrayHour } from '@/utils/time'
 import DashboardDiv from '@/components/Home/DashboardDiv'
+import Area404 from '@/components/Home/area404'
 import DynamicIcon from '@/components/DynamicIcon'
 import type { ApiDataCollection } from '@/page/Home'
 
@@ -14,22 +13,34 @@ const NowInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection }
   const [describe, setDescribe] = useState('')
   const [icon, setIcon] = useState('1')
 
+  const [is404, setIs404] = useState<boolean>(false)
+
   useEffect(() => {
     const { weather36HourEvery12Hour, weather3DayEvery3Hour } = apiDataCollection
 
     const api36Hour = weather36HourEvery12Hour?.location?.[0]?.weatherElement
+    const api3Day = weather3DayEvery3Hour?.Locations?.[0]?.Location?.[0]?.WeatherElement
+    setIs404(!Boolean(api36Hour) || !Boolean(api3Day))
+    if (!api36Hour || !api3Day) return
+
     const wx = api36Hour?.find((i) => i.elementName === 'Wx') // 天氣現象
     setDescribe(wx.time[0].parameter.parameterName)
     setIcon(wx.time[0].parameter.parameterValue)
 
-    const api3Day = weather3DayEvery3Hour?.locations?.[0]?.location?.[0]?.weatherElement
-    const t = api3Day?.find((i) => i.elementName === 'T') // 溫度
-    const tIndex = isApi3hrFirstArrayHour(dateTime.hour(), dayjs(t.time[0].dataTime).hour()) ? 0 : 1
-    setTemperature(t.time[tIndex]?.elementValue[0]?.value)
+    const t = api3Day?.find((i) => i.ElementName === '溫度')
+    setTemperature(t.Time[0]?.ElementValue[0]?.Temperature)
 
-    const pop6h = api3Day?.find((i) => i.elementName === 'PoP6h') // 6小時降雨機率
-    setRain(pop6h.time[0]?.elementValue[0].value)
+    const pop3h = api3Day?.find((i) => i.ElementName === '3小時降雨機率')
+    setRain(pop3h.Time[0]?.ElementValue[0].ProbabilityOfPrecipitation)
   }, [apiDataCollection])
+
+  if (is404) {
+    return (
+      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="now-info">
+        <Area404 />
+      </DashboardDiv>
+    )
+  }
 
   return (
     <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="now-info">

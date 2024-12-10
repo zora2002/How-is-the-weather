@@ -3,6 +3,14 @@
   height: 100vh;
   background-color: #98989833;
   float: right;
+  .area404 {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height: inherit;
+    color: gray;
+    letter-spacing: 1ex;
+  }
   .up-area {
     width: 94%;
     height: 38vh;

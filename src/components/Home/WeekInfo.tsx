@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import useApp from '@/contexts/app-context-use'
 import { isApi12hrFirstArrayHour } from '@/utils/time'
 import DashboardDiv from '@/components/Home/DashboardDiv'
+import Area404 from '@/components/Home/area404'
 import DynamicIcon from '@/components/DynamicIcon'
 import type { ApiDataCollection } from '@/page/Home'
 import { SvgInfoList, setting2SVG, Svg2PathD } from '@/utils/svg'
@@ -28,9 +29,9 @@ interface DateTemp {
 }
 
 const checkArray = (
-  list: Weather7DayEvery12HourResponseData['locations'][0]['location'][0]['weatherElement'][0]['time']
+  list: Weather7DayEvery12HourResponseData['Locations'][0]['Location'][0]['WeatherElement'][0]['Time']
 ) => {
-  return isApi12hrFirstArrayHour(dayjs(list[0].startTime).hour()) ? list : list.slice(1, list?.length)
+  return isApi12hrFirstArrayHour(dayjs(list[0].StartTime).hour()) ? list : list.slice(1, list?.length)
 }
 
 const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection }) => {
@@ -42,13 +43,17 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
   const [svg2PathD, setSvg2PathD] = useState<Svg2PathD>({ day: '', night: '' })
   const [rainList, setRainList] = useState({ day: [], night: [] })
 
+  const [is404, setIs404] = useState<boolean>(false)
+
   useEffect(() => {
     const { weather7DayEvery12Hour } = apiDataCollection
-    const api7Day = weather7DayEvery12Hour?.locations?.[0]?.location?.[0].weatherElement
+    const api7Day = weather7DayEvery12Hour?.Locations?.[0]?.Location?.[0].WeatherElement
+    setIs404(!Boolean(api7Day))
+    if (!api7Day) return
 
     // up-list
-    const wx = api7Day.find((i) => i.elementName === 'Wx') // 平均溫度
-    const checkedWx = checkArray([...wx?.time])
+    const wx = api7Day?.find((i) => i.ElementName === '天氣現象')
+    const checkedWx = checkArray([...wx?.Time])
     // date
     let dateIcon: DateIcon[] = []
     checkedWx?.forEach((i, index, arr) => {
@@ -58,18 +63,18 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
         night: arr[index + 1],
       }
       dateIcon.push({
-        date: dayjs(i.startTime).format('MM/DD'),
+        date: dayjs(i.StartTime).format('MM/DD'),
         icon: {
-          day: info.day.elementValue[1].value,
-          night: info.night.elementValue[1].value,
+          day: info.day.ElementValue[0].WeatherCode,
+          night: info.night.ElementValue[0].WeatherCode,
         },
       })
     })
     setdateIconList(dateIcon)
 
     // svg
-    const t = api7Day.find((i) => i.elementName === 'T') // 平均溫度
-    const checkedT = checkArray([...t.time])
+    const t = api7Day?.find((i) => i.ElementName === '平均溫度')
+    const checkedT = checkArray([...t.Time])
     let dateTemp: DateTemp[] = []
     checkedT?.forEach((i, index, arr) => {
       if (index % 2 === 1) return
@@ -78,10 +83,10 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
         night: arr[index + 1],
       }
       dateTemp.push({
-        date: dayjs(i.startTime).format('MM/DD'),
+        date: dayjs(i.StartTime).format('MM/DD'),
         temp: {
-          day: info.day.elementValue[0].value,
-          night: info.night.elementValue[0].value,
+          day: info.day.ElementValue[0].Temperature,
+          night: info.night.ElementValue[0].Temperature,
         },
       })
     })
@@ -96,19 +101,27 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
     setSvg2PathD(svgResult.svg2PathD)
 
     // rain
-    const poP12h = api7Day.find((i) => i.elementName === 'PoP12h') // 12小時降雨機率
-    let checkedPoP12h = checkArray([...poP12h.time])
+    const poP12h = api7Day?.find((i) => i.ElementName === '12小時降雨機率')
+    let checkedPoP12h = checkArray([...poP12h.Time])
     let countRainList = {
       day: [],
       night: [],
     }
-    checkedPoP12h.map((i, index) =>
-      index % 2 === 1
-        ? countRainList.day.push(i.elementValue[0].value)
-        : countRainList.night.push(i.elementValue[0].value)
+    checkedPoP12h.forEach((i, index) =>
+      (index + 1) % 2 === 1
+        ? countRainList.day.push(i.ElementValue[0].ProbabilityOfPrecipitation)
+        : countRainList.night.push(i.ElementValue[0].ProbabilityOfPrecipitation)
     )
     setRainList(countRainList)
   }, [apiDataCollection])
+
+  if (is404) {
+    return (
+      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="week-info">
+        <Area404 />
+      </DashboardDiv>
+    )
+  }
 
   return (
     <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="week-info">

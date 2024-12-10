@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 
 import useApp from '@/contexts/app-context-use'
 import DashboardDiv from '@/components/Home/DashboardDiv'
+import Area404 from '@/components/Home/area404'
 import DynamicIcon from '../DynamicIcon'
 import type { ApiDataCollection } from '@/page/Home'
 import { SvgInfoList, setting1SVG, svg1PathD } from '@/utils/svg'
@@ -19,38 +20,50 @@ const TwentyFourHours = ({ apiDataCollection }: { apiDataCollection: ApiDataColl
   const [svg1PathD, setSvg1PathD] = useState<svg1PathD>('')
   const [rainList, setRainList] = useState<string[]>([])
 
+  const [is404, setIs404] = useState<boolean>(false)
+
   useEffect(() => {
     const infoHandler = () => {
       const { weather3DayEvery3Hour } = apiDataCollection
-      const api3Day = weather3DayEvery3Hour?.locations?.[0]?.location?.[0]?.weatherElement
+      const api3Day = weather3DayEvery3Hour?.Locations?.[0]?.Location?.[0]?.WeatherElement
+      setIs404(!Boolean(api3Day))
+      if (!api3Day) return
 
       // up-list
-      const wx = api3Day.find((i) => i.elementName === 'Wx') // 天氣現象
-      const timeIcon = wx?.time?.slice(0, SHOW_AMOUNT)?.map((i) => {
+      const wx = api3Day?.find((i) => i.ElementName === '天氣現象')
+      const timeIcon = wx?.Time?.slice(0, SHOW_AMOUNT)?.map((i) => {
         return {
           time:
-            dayjs(i.startTime).hour() === 0
-              ? `${dayjs(i.startTime).format('DD')}號`
-              : `${dayjs(i.startTime).format('HH')}時`,
-          icon: i.elementValue[1].value,
+            dayjs(i.StartTime).hour() === 0
+              ? `${dayjs(i.StartTime).format('DD')}號`
+              : `${dayjs(i.StartTime).format('HH')}時`,
+          icon: i.ElementValue[0].WeatherCode,
         }
       })
       setTimeIconList(timeIcon)
 
       // svg
-      const t = api3Day.find((i) => i.elementName === 'T') // 溫度
-      const temperature = t?.time?.slice(0, SHOW_AMOUNT)?.map((i) => i.elementValue[0].value)
+      const t = api3Day?.find((i) => i.ElementName === '溫度')
+      const temperature = t?.Time?.slice(0, SHOW_AMOUNT)?.map((i) => i.ElementValue[0].Temperature)
       const { svgInfoList, svg1PathD } = setting1SVG(temperature, SHOW_AMOUNT, 80, 60)
       setSvgInfoList(svgInfoList)
       setSvg1PathD(svg1PathD)
 
       // down-list
-      const poP6h = api3Day.find((i) => i.elementName === 'PoP6h') // 6小時降雨機率
-      let rain = poP6h?.time?.flatMap((i) => [i.elementValue[0].value, i.elementValue[0].value]).slice(0, SHOW_AMOUNT)
+      const pop3h = api3Day?.find((i) => i.ElementName === '3小時降雨機率')
+      let rain = pop3h?.Time?.slice(0, SHOW_AMOUNT).map((i) => i.ElementValue[0].ProbabilityOfPrecipitation)
       setRainList(rain)
     }
     infoHandler()
   }, [apiDataCollection])
+
+  if (is404) {
+    return (
+      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="twenty-four-hours">
+        <Area404 />
+      </DashboardDiv>
+    )
+  }
 
   return (
     <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="twenty-four-hours">
