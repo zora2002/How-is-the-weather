@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import useApp from '@/contexts/app-context-use'
 import { isApi12hrFirstArrayHour } from '@/utils/time'
 import DashboardDiv from '@/components/Home/DashboardDiv'
+import Area404 from '@/components/Home/area404'
 import DynamicIcon from '@/components/DynamicIcon'
 import type { ApiDataCollection } from '@/page/Home'
 import { SvgInfoList, setting2SVG, Svg2PathD } from '@/utils/svg'
@@ -42,12 +43,16 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
   const [svg2PathD, setSvg2PathD] = useState<Svg2PathD>({ day: '', night: '' })
   const [rainList, setRainList] = useState({ day: [], night: [] })
 
+  const [is404, setIs404] = useState<boolean>(false)
+
   useEffect(() => {
     const { weather7DayEvery12Hour } = apiDataCollection
     const api7Day = weather7DayEvery12Hour?.locations?.[0]?.location?.[0].weatherElement
+    setIs404(!Boolean(api7Day))
+    if (!api7Day) return
 
     // up-list
-    const wx = api7Day.find((i) => i.elementName === 'Wx') // 平均溫度
+    const wx = api7Day?.find((i) => i.elementName === 'Wx') // 平均溫度
     const checkedWx = checkArray([...wx?.time])
     // date
     let dateIcon: DateIcon[] = []
@@ -68,7 +73,7 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
     setdateIconList(dateIcon)
 
     // svg
-    const t = api7Day.find((i) => i.elementName === 'T') // 平均溫度
+    const t = api7Day?.find((i) => i.elementName === 'T') // 平均溫度
     const checkedT = checkArray([...t.time])
     let dateTemp: DateTemp[] = []
     checkedT?.forEach((i, index, arr) => {
@@ -96,7 +101,7 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
     setSvg2PathD(svgResult.svg2PathD)
 
     // rain
-    const poP12h = api7Day.find((i) => i.elementName === 'PoP12h') // 12小時降雨機率
+    const poP12h = api7Day?.find((i) => i.elementName === 'PoP12h') // 12小時降雨機率
     let checkedPoP12h = checkArray([...poP12h.time])
     let countRainList = {
       day: [],
@@ -109,6 +114,14 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
     )
     setRainList(countRainList)
   }, [apiDataCollection])
+
+  if (is404) {
+    return (
+      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="week-info">
+        <Area404 />
+      </DashboardDiv>
+    )
+  }
 
   return (
     <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="week-info">
