@@ -46,21 +46,6 @@ export function getTimePeriod(apiData: SunResponseData, dateTime: dayjs.Dayjs) {
 }
 
 /**
- * isApi3hrFirstArrayHour 當前氣溫要選[0]還是[1](3小時間距)
- */
-export function isApi3hrFirstArrayHour(nowHour: number, apiFirstHour: number) {
-  if ((apiFirstHour === 21 && (nowHour === 0 || nowHour === 1 || nowHour === 2)) || nowHour > apiFirstHour + 2) {
-    return false
-  } else if ((apiFirstHour === 0 && (nowHour === 21 || nowHour === 22 || nowHour === 23)) || nowHour < apiFirstHour) {
-    return true
-  } else if (apiFirstHour <= nowHour || nowHour <= apiFirstHour + 2) {
-    return true
-  } else {
-    console.log('isApi3hrFirstArrayHour捕捉到遺漏情境', nowHour, apiFirstHour)
-  }
-}
-
-/**
  * isApi12hrFirstArrayHour 要選[0]還是[1](12小時間距)
  */
 export function isApi12hrFirstArrayHour(apiFirstHour: number) {
