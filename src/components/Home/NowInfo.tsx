@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import useApp from '@/contexts/app-context-use'
 import DashboardDiv from '@/components/Home/DashboardDiv'
-import Area404 from '@/components/Home/area404'
+import Area404 from '@/components/Home/Area404'
 import DynamicIcon from '@/components/DynamicIcon'
 import type { ApiDataCollection } from '@/page/Home'
 
@@ -36,23 +36,23 @@ const NowInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection }
 
   if (is404) {
     return (
-      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="now-info">
+      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="card now-info">
         <Area404 />
       </DashboardDiv>
     )
   }
 
   return (
-    <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="now-info">
+    <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="card now-info">
       <div className="icon">
         <DynamicIcon icon={icon} hour={dateTime.hour()} />
       </div>
       <div className="data">
-        <div className="temperature">{temperature}℃</div>
-        <div className="describe">{describe}</div>
-        <div className="rain">{rain}%</div>
+        <span className="temperature">{temperature}℃</span>
+        <span className="describe">{describe}</span>
+        <span className="rain">{rain}%</span>
       </div>
-      <div className="time">{dateTime.format('MMM DD HH:mm')}</div>
+      <span className="time">{dateTime.format('MMM DD HH:mm')}</span>
     </DashboardDiv>
   )
 }

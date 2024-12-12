@@ -2,11 +2,9 @@ import { useState, useEffect } from 'react'
 
 import useApp from '@/contexts/app-context-use'
 import DashboardDiv from '@/components/Home/DashboardDiv'
-import Area404 from '@/components/Home/area404'
+import Area404 from '@/components/Home/Area404'
 import type { ApiDataCollection } from '@/page/Home'
 import { CENTER, SUN_R, MOON_R, infoHandler, translateHandler, Info } from '@/utils/sun-moon-helper'
-
-import '@/assets/style/Home/SunMoonTime.scss'
 
 const SunMoonTime = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection }) => {
   const { dateTime, dashboard } = useApp()
@@ -35,14 +33,14 @@ const SunMoonTime = ({ apiDataCollection }: { apiDataCollection: ApiDataCollecti
 
   if (is404) {
     return (
-      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="sun-moon-time">
+      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="card sun-moon-time">
         <Area404 />
       </DashboardDiv>
     )
   }
 
   return (
-    <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="sun-moon-time">
+    <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="card sun-moon-time">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
         <g id="日月時間" transform="translate(0 0)">
           <g

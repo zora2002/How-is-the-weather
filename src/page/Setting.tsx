@@ -142,14 +142,14 @@ const Setting = () => {
     <>
       <div className="setting-bg">
         <div className="setting">
-          <ul>
-            <li className="now-location">
+          <ul className="location">
+            <li className="setting-item now-location">
               <div className="item">現在位置</div>
               <div className="content">
                 {location.searchCity} {location.searchDistrict}
               </div>
             </li>
-            <li className="manual">
+            <li className="setting-item manual">
               <div className="item">手動選擇</div>
               <div className="content">
                 <select
@@ -187,7 +187,7 @@ const Setting = () => {
                 <button onClick={manualUpdateLocation}>更新位置</button>
               </div>
             </li>
-            <li className="auto">
+            <li className="setting-item auto">
               <div className="item">自動選擇</div>
               <div className="content">
                 <button onClick={autoUpdateLocation} disabled={isLoading}>
@@ -197,8 +197,8 @@ const Setting = () => {
             </li>
           </ul>
           <span className="setting-divider"></span>
-          <ul>
-            <li>
+          <ul className="view">
+            <li className="setting-item opacity">
               <div className="item">透明度</div>
               <div className="content">
                 <input type="range" min="0" max="100" value={opacity} onChange={updateDashBoard} />

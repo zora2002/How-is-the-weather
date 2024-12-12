@@ -1,19 +1,20 @@
 import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
 
 import useApp from '@/contexts/app-context-use'
 import { isApi12hrFirstArrayHour } from '@/utils/time'
 import DashboardDiv from '@/components/Home/DashboardDiv'
-import Area404 from '@/components/Home/area404'
+import Area404 from '@/components/Home/Area404'
 import DynamicIcon from '@/components/DynamicIcon'
 import type { ApiDataCollection } from '@/page/Home'
 import { SvgInfoList, setting2SVG, Svg2PathD } from '@/utils/svg'
 import type { Weather7DayEvery12HourResponseData } from '@/ts-common/api-response'
 
-import '@/assets/style/Home/WeekInfo.scss'
-import dayjs from 'dayjs'
-
 interface DateIcon {
-  date: string
+  date: {
+    m: string
+    d: string
+  }
   icon: {
     day: string
     night: string
@@ -63,7 +64,10 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
         night: arr[index + 1],
       }
       dateIcon.push({
-        date: dayjs(i.StartTime).format('MM/DD'),
+        date: {
+          m: dayjs(i.StartTime).format('MMM'),
+          d: dayjs(i.StartTime).format('DD')
+        },
         icon: {
           day: info.day.ElementValue[0].WeatherCode,
           night: info.night.ElementValue[0].WeatherCode,
@@ -117,18 +121,19 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
 
   if (is404) {
     return (
-      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="week-info">
+      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="card week-info">
         <Area404 />
       </DashboardDiv>
     )
   }
 
   return (
-    <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="week-info">
-      <ul className="up-list">
+    <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="card week-info">
+      <ul className="date-icon-list">
         {dateIconList.map((i, index) => (
           <li key={index}>
-            <div>{i.date}</div>
+            <span>{i.date.m}</span>
+            <span>{i.date.d}</span>
             <DynamicIcon icon={isDay ? i.icon.day : i.icon.night} isDay={isDay} />
           </li>
         ))}
@@ -162,7 +167,7 @@ const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection 
           strokeWidth="1"
         />
       </svg>
-      <ul className="down-list">
+      <ul className="percent-list">
         {rainList[isDay ? 'day' : 'night'].map((i, index) => (
           <li key={index}>{i === ' ' ? '-' : `${i}%`}</li>
         ))}

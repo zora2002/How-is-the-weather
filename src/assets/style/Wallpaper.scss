@@ -1,46 +1,44 @@
+.time-period {
+  height: 100%;
+  background: no-repeat center center / cover;
+}
 .midnight {
-  background: url('@/assets/img/timePeriod/midnight.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/midnight.jpg');
 }
 .dawn {
-  background: url('@/assets/img/timePeriod/dawn.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/dawn.jpg');
 }
 .dayTwilight {
-  background: url('@/assets/img/timePeriod/dayTwilight.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/dayTwilight.jpg');
 }
 .sunrise {
-  background: url('@/assets/img/timePeriod/sunrise.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/sunrise.jpg');
 }
 .morning {
-  background: url('@/assets/img/timePeriod/morning.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/morning.jpg');
 }
 .daytime {
-  background: url('@/assets/img/timePeriod/daytime.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/daytime.jpg');
 }
 .noon {
-  background: url('@/assets/img/timePeriod/noon.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/noon.jpg');
 }
 .afternoon {
-  background: url('@/assets/img/timePeriod/afternoon.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/afternoon.jpg');
 }
 .evening {
-  background: url('@/assets/img/timePeriod/evening.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/evening.jpg');
 }
 .sunset {
-  background: url('@/assets/img/timePeriod/sunset.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/sunset.jpg');
 }
 .nightTwilight {
-  background: url('@/assets/img/timePeriod/nightTwilight.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/nightTwilight.jpg');
 }
 .dusk {
-  background: url('@/assets/img/timePeriod/dusk.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/dusk.jpg');
 }
 .night {
-  background: url('@/assets/img/timePeriod/night.jpg') no-repeat center center;
+  background-image: url('@/assets/img/timePeriod/night.jpg');
 }
-.time-period {
-  width: 100%;
-  height: 100vh;
-  background-size: 100% 100%;
-  position: absolute;
-  z-index: -1;
-}
+
