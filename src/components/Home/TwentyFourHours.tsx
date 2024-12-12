@@ -3,12 +3,10 @@ import dayjs from 'dayjs'
 
 import useApp from '@/contexts/app-context-use'
 import DashboardDiv from '@/components/Home/DashboardDiv'
-import Area404 from '@/components/Home/area404'
+import Area404 from '@/components/Home/Area404'
 import DynamicIcon from '../DynamicIcon'
 import type { ApiDataCollection } from '@/page/Home'
 import { SvgInfoList, setting1SVG, svg1PathD } from '@/utils/svg'
-
-import '@/assets/style/Home/TwentyFourHours.scss'
 
 const SHOW_AMOUNT = 10
 
@@ -59,18 +57,19 @@ const TwentyFourHours = ({ apiDataCollection }: { apiDataCollection: ApiDataColl
 
   if (is404) {
     return (
-      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="twenty-four-hours">
+      <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="card twenty-four-hours">
         <Area404 />
       </DashboardDiv>
     )
   }
 
   return (
-    <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="twenty-four-hours">
-      <ul className="up-list">
+    <DashboardDiv $backgroundColorOpacity={dashboard.backgroundColorOpacity} className="card twenty-four-hours">
+      <ul className="time-icon-list">
         {timeIconList.map((i, index) => (
           <li key={index}>
-            <div>{i.time}</div>
+            <span>{i.time.slice(0, -1)}</span>
+            <span>{i.time.slice(-1)}</span>
             <DynamicIcon icon={i.icon} hour={i.time.slice(-1) === '號' ? 0 : parseInt(i.time.slice(0, 2))} />
           </li>
         ))}
@@ -85,7 +84,7 @@ const TwentyFourHours = ({ apiDataCollection }: { apiDataCollection: ApiDataColl
         {svgInfoList.circle?.map((i) => <circle key={i.key} cx={i.cx} cy={i.cy} r="3" fill="#000000" />)}
         <path d={svg1PathD} transform="translate(0, 0)" fill="none" stroke="#000000" strokeWidth="1" />
       </svg>
-      <ul className="down-list">
+      <ul className="percent-list">
         {rainList.map((i, index) => (
           <li key={index}>{i}%</li>
         ))}

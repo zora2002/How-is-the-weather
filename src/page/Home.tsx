@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 
 import useApp from '@/contexts/app-context-use'
 import type { Location } from '@/contexts/app-context.interface'
-import Wallpaper from '@/components/Home/Wallpaper'
 import TwentyFourHours from '@/components/Home/TwentyFourHours'
 import NowInfo from '@/components/Home/NowInfo'
 import WeekInfo from '@/components/Home/WeekInfo'
@@ -14,6 +13,7 @@ import {
   sunData,
   moonData,
 } from '@/utils/api-list'
+import { getTimePeriod } from '@/utils/time'
 import type {
   Weather36HourEvery12HourResponseData,
   Weather3DayEvery3HourResponseData,
@@ -22,8 +22,8 @@ import type {
   MoonResponseData,
 } from '@/ts-common/api-response'
 
-import '@/assets/style/Home/Home.scss'
-import '@/assets/style/Home/NowInfo.scss'
+import '@/assets/style/Home.scss'
+import '@/assets/style/Wallpaper.scss'
 
 export interface ApiDataCollection {
   weather36HourEvery12Hour: Weather36HourEvery12HourResponseData
@@ -56,6 +56,7 @@ const getAllApiData = async (location: Location) => {
 const Home = () => {
   const { dateTime, location } = useApp()
   const [apiDataCollection, setApiDataCollection] = useState<ApiDataCollection>(null)
+  const [timePeriod, setTimePeriod] = useState('')
 
   useEffect(() => {
     const apiDataCollectionHandler = async () => {
@@ -70,23 +71,26 @@ const Home = () => {
     apiDataCollectionHandler()
   }, [dateTime.hour(), location.searchDistrict])
 
+  useEffect(() => {
+    if (!apiDataCollection) return
+    const { sun } = apiDataCollection
+    setTimePeriod(getTimePeriod(sun, dateTime))
+  }, [apiDataCollection, dateTime.minute()])
+
   return (
     <>
-      <Wallpaper apiDataCollection={apiDataCollection} />
-      <div className="dashboard">
-        {apiDataCollection && (
-          <>
-            <div className="up-area">
-              <TwentyFourHours apiDataCollection={apiDataCollection} />
-              <NowInfo apiDataCollection={apiDataCollection} />
-            </div>
-            <div className="down-area">
-              <SunMoonTime apiDataCollection={apiDataCollection} />
-              <WeekInfo apiDataCollection={apiDataCollection} />
-            </div>
-          </>
-        )}
-      </div>
+      {apiDataCollection ? (
+        <div className={`dashboard time-period ${timePeriod}`}>
+          <TwentyFourHours apiDataCollection={apiDataCollection} />
+          <NowInfo apiDataCollection={apiDataCollection} />
+          <SunMoonTime apiDataCollection={apiDataCollection} />
+          <WeekInfo apiDataCollection={apiDataCollection} />
+        </div>
+      ) : (
+        <div className="loader-bg">
+          <div className="loader"></div>
+        </div>
+      )}
     </>
   )
 }
