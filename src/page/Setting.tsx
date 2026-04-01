@@ -12,7 +12,7 @@ import cityDistricts from '@/config/cityDistricts'
  * @param  {String} latitude 緯度
  */
 const wgs84ToCityDistrict = (longitude: string, latitude: string) => {
-  // https://data.moi.gov.tw/MoiOD/Data/DataDetail.aspx?oid=CA6D10B1-C474-41DB-8B53-28E7E4E18977
+  // https://data.gov.tw/dataset/152915
   return axios.get(`https://api.nlsc.gov.tw/other/TownVillagePointQuery/${longitude}/${latitude}/4326`)
 }
 
