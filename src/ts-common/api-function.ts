@@ -7,7 +7,10 @@ import type {
   MoonResponseData,
   Tidal1MonthResponseData,
 } from '@/ts-common/api-response'
-import { Location } from '@/contexts/app-context.interface'
+export interface Location {
+  searchCity: string
+  searchDistrict: string
+}
 
 export interface RunApiType {
   <T0, T1 = undefined, T2 = undefined>({

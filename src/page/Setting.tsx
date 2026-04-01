@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { ToastContainer, toast, ToastOptions, Slide } from 'react-toastify'
 
-import useApp from '@/contexts/app-context-use'
+import { useAppStore } from '@/store/app-store'
 import '@/assets/style/Setting.scss'
 import cityDistricts from '@/config/cityDistricts'
 
@@ -31,7 +31,10 @@ const toastOption: Record<'type' | 'status', ToastOptions> = {
 }
 
 const Setting = () => {
-  const { location, dispatch, dashboard } = useApp()
+  const location = useAppStore((s) => s.location)
+  const dashboard = useAppStore((s) => s.dashboard)
+  const setLocation = useAppStore((s) => s.setLocation)
+  const setBackgroundColorOpacity = useAppStore((s) => s.setBackgroundColorOpacity)
   const cityList = cityDistricts.cities
   const [districtList, setDistrictList] = useState([])
   const [manualCity, setManualCity] = useState('')
@@ -63,13 +66,7 @@ const Setting = () => {
       })
       return
     }
-    dispatch({
-      type: 'setLocation',
-      payload: {
-        searchCity: manualCity,
-        searchDistrict: manualDistrict,
-      },
-    })
+    setLocation(manualCity, manualDistrict)
     toast('位置已更新', {
       ...toastOption.type,
       ...toastOption.status,
@@ -97,13 +94,7 @@ const Setting = () => {
       const longitude = position.coords.longitude
       try {
         const response = await wgs84ToCityDistrict(longitude, latitude)
-        dispatch({
-          type: 'setLocation',
-          payload: {
-            searchCity: response.data.ctyName,
-            searchDistrict: response.data.townName,
-          },
-        })
+        setLocation(response.data.ctyName, response.data.townName)
         toast.update(toastId, {
           ...toastOption.type,
           ...toastOption.status,
@@ -131,10 +122,7 @@ const Setting = () => {
   }
 
   const updateDashBoard = (event) => {
-    dispatch({
-      type: 'setBackgroundColorOpacity',
-      payload: event.target.value,
-    })
+    setBackgroundColorOpacity(event.target.value)
     setOpacity(event.target.value)
   }
 

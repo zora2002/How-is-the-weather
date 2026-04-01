@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
-import useApp from '@/contexts/app-context-use'
-import type { Location } from '@/contexts/app-context.interface'
+import { useAppStore } from '@/store/app-store'
+import type { Location } from '@/ts-common/api-function'
 import TwentyFourHours from '@/components/Home/TwentyFourHours'
 import NowInfo from '@/components/Home/NowInfo'
 import WeekInfo from '@/components/Home/WeekInfo'
@@ -54,7 +54,8 @@ const getAllApiData = async (location: Location) => {
 }
 
 const Home = () => {
-  const { dateTime, location } = useApp()
+  const dateTime = useAppStore((s) => s.dateTime)
+  const location = useAppStore((s) => s.location)
   const [apiDataCollection, setApiDataCollection] = useState<ApiDataCollection>(null)
   const [timePeriod, setTimePeriod] = useState('')
 

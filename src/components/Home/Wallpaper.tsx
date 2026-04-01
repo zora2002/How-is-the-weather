@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 
-import useApp from '@/contexts/app-context-use'
+import { useAppStore } from '@/store/app-store'
 import { getTimePeriod } from '@/utils/time'
 import type { ApiDataCollection } from '@/page/Home'
 
 
 const Wallpaper = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection }) => {
-  const { dateTime } = useApp()
+  const dateTime = useAppStore((s) => s.dateTime)
   const [timePeriod, setTimePeriod] = useState('')
 
   useEffect(() => {

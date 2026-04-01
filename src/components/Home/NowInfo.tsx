@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 
-import useApp from '@/contexts/app-context-use'
+import { useAppStore } from '@/store/app-store'
 import DashboardDiv from '@/components/Home/DashboardDiv'
 import Area404 from '@/components/Home/Area404'
 import DynamicIcon from '@/components/DynamicIcon'
 import type { ApiDataCollection } from '@/page/Home'
 
 const NowInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection }) => {
-  const { dateTime, dashboard } = useApp()
+  const dateTime = useAppStore((s) => s.dateTime)
+  const dashboard = useAppStore((s) => s.dashboard)
   const [temperature, setTemperature] = useState('')
   const [rain, setRain] = useState('')
   const [describe, setDescribe] = useState('')
