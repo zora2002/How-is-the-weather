@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 
-import useApp from '@/contexts/app-context-use'
+import { useAppStore } from '@/store/app-store'
 import DashboardDiv from '@/components/Home/DashboardDiv'
 import Area404 from '@/components/Home/Area404'
 import type { ApiDataCollection } from '@/page/Home'
 import { CENTER, SUN_R, MOON_R, infoHandler, translateHandler, Info } from '@/utils/sun-moon-helper'
 
 const SunMoonTime = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection }) => {
-  const { dateTime, dashboard } = useApp()
+  const dateTime = useAppStore((s) => s.dateTime)
+  const dashboard = useAppStore((s) => s.dashboard)
   const [info, setInfo] = useState<Info | null>()
   const [sunTrans, setSunTrans] = useState<string>('translate(0 0)')
   const [moonTrans, setMoonTrans] = useState('translate(0 0)')

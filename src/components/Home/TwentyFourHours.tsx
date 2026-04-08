@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 
-import useApp from '@/contexts/app-context-use'
+import { useAppStore } from '@/store/app-store'
 import DashboardDiv from '@/components/Home/DashboardDiv'
 import Area404 from '@/components/Home/Area404'
 import DynamicIcon from '../DynamicIcon'
@@ -11,7 +11,7 @@ import { SvgInfoList, setting1SVG, svg1PathD } from '@/utils/svg'
 const SHOW_AMOUNT = 10
 
 const TwentyFourHours = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection }) => {
-  const { dashboard } = useApp()
+  const dashboard = useAppStore((s) => s.dashboard)
 
   const [timeIconList, setTimeIconList] = useState<{ time: string; icon: string }[]>([])
   const [svgInfoList, setSvgInfoList] = useState<SvgInfoList>({ text: [], circle: [] })

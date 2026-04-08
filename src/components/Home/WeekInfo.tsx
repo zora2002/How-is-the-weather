@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 
-import useApp from '@/contexts/app-context-use'
+import { useAppStore } from '@/store/app-store'
 import { isApi12hrFirstArrayHour } from '@/utils/time'
 import DashboardDiv from '@/components/Home/DashboardDiv'
 import Area404 from '@/components/Home/Area404'
@@ -36,7 +36,7 @@ const checkArray = (
 }
 
 const WeekInfo = ({ apiDataCollection }: { apiDataCollection: ApiDataCollection }) => {
-  const { dashboard } = useApp()
+  const dashboard = useAppStore((s) => s.dashboard)
   const [isDay, setIsDay] = useState(true)
 
   const [dateIconList, setdateIconList] = useState<DateIcon[]>([])
