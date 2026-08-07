@@ -90,7 +90,7 @@ const chartOptions: ChartOptions<'line'> = {
     datalabels: {
       align: 'top',
       color: [setRgba(RGBA.BLUE, 0.6), setRgba(RGBA.YELLOW, 1)],
-      formatter: (value, context) => {
+      formatter: (value, _context) => {
         return value.y
       },
     },
