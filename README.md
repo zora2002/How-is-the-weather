@@ -19,7 +19,7 @@
 
 > 需先處理跨域問題，可參考 https://www.letswrite.tw/api-cross-domain-node/ 搭配 GCP 的 Cloud Run
 
-1. `.env_example` 改成 `.env`
+1. `cp .env.example .env`
 2. 在 `VITE_API_BASE_URL=` 貼上自己的 server url
 3. `npm install`
 4. 終端機執行 `npm run start`
